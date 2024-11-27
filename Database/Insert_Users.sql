@@ -1,5 +1,5 @@
 -- Use the database
-USE HIMAROS;
+USE HIMAROS_DB;
 
 -- Add 1 Admin
 CALL AddUser('Admin', 'User', SHA1('adminpass'), 'admin@example.com', 'admin', 'Male');

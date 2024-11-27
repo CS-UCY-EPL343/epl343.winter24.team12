@@ -9,7 +9,7 @@ CREATE TABLE USERS (
   UserID INT NOT NULL AUTO_INCREMENT,
   First_Name VARCHAR(50) NOT NULL,
   Last_Name VARCHAR(50) NOT NULL,
-  Username VARCHAR(101) GENERATED ALWAYS AS (CONCAT(First_Name, ' ', Last_Name)) STORED,
+  Username VARCHAR(50),
   PWD VARCHAR(255) NOT NULL,
   Email VARCHAR(255) NOT NULL UNIQUE,
   User_Role ENUM('admin', 'doctor', 'storekeeper', 'nurse', 'secretary') NOT NULL,

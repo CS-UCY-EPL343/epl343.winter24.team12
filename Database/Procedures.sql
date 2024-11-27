@@ -1,10 +1,8 @@
 -- Use the database
 USE HIMAROS_DB;
 
--- Change delimiter for defining multiple procedures
-DELIMITER $$
-
 -- Add User Procedure ---
+DELIMITER $$
 CREATE PROCEDURE AddUser(
     IN p_First_Name VARCHAR(50),
     IN p_Last_Name VARCHAR(50),
@@ -29,13 +27,13 @@ BEGIN
     -- Generate the unique username
     SET uniqueUsername = CONCAT(baseUsername, LPAD(usernameCount + 1, 2, '0'));
 
-    -- Insert the new user
+    -- Insert the new user with the generated username
     INSERT INTO USERS (First_Name, Last_Name, Username, PWD, Email, User_Role, Gender)
     VALUES (p_First_Name, p_Last_Name, uniqueUsername, p_PWD, p_Email, p_User_Role, p_Gender);
 END$$
 
-
 -- Delete User Procedure ---
+DELIMITER $$
 CREATE PROCEDURE DeleteUser(
     IN p_Username VARCHAR(50)
 )
@@ -43,8 +41,8 @@ BEGIN
     DELETE FROM USERS WHERE Username = p_Username;
 END$$
 
-
 -- Activate/Deactivate User Procedure ---
+DELIMITER $$
 CREATE PROCEDURE UpdateUserStatus(
     IN p_Username VARCHAR(50),
     IN p_NewStatus ENUM('Active', 'Inactive')
@@ -55,8 +53,8 @@ BEGIN
     WHERE Username = p_Username;
 END$$
 
-
 -- Add Stock Procedure ---
+DELIMITER $$
 CREATE PROCEDURE AddStock(
     IN p_ItemID INT,
     IN p_Quantity INT,
@@ -72,8 +70,8 @@ BEGIN
     WHERE ItemID = p_ItemID;
 END$$
 
-
 -- Remove Stock Procedure ---
+DELIMITER $$
 CREATE PROCEDURE RemoveStock(
     IN p_ItemID INT,
     IN p_Quantity INT
@@ -124,26 +122,8 @@ BEGIN
     END IF;
 END$$
 
-
---- Update Item Quantity
-CREATE PROCEDURE UpdateItemQuantity(
-    IN p_ItemID INT,
-    IN p_Quantity INT
-)
-BEGIN
-    -- Update the quantity in the CURRENT_STOCK table
-    UPDATE CURRENT_STOCK
-    SET Quantity = Quantity + p_Quantity
-    WHERE ItemID = p_ItemID;
-    
-    -- Update the total quantity in the ITEM table
-    UPDATE ITEM
-    SET Quantity = (SELECT SUM(Quantity) FROM CURRENT_STOCK WHERE ItemID = p_ItemID)
-    WHERE ItemID = p_ItemID;
-END$$
-
-
 -- Add New Item Procedure ---
+DELIMITER $$
 CREATE PROCEDURE AddNewItem(
     IN p_Category VARCHAR(255),
     IN p_Item_Name VARCHAR(50),
@@ -159,8 +139,8 @@ BEGIN
     VALUES (p_Category, p_Item_Name, p_Picture_URL, p_Cost, p_Item_Type, p_Item_Description, p_Min_Quantity, p_SupplierID);
 END$$
 
-
---- Update Item Information ---
+-- Update Item Information ---
+DELIMITER $$
 CREATE PROCEDURE UpdateItemInfo(
     IN p_ItemID INT,
     IN p_Category VARCHAR(255),
@@ -186,8 +166,8 @@ BEGIN
     WHERE ItemID = p_ItemID;
 END$$
 
-
 -- Delete an Item from Inventory ---
+DELIMITER $$
 CREATE PROCEDURE DeleteItem(
     IN p_ItemID INT
 )
@@ -201,8 +181,8 @@ BEGIN
     WHERE ItemID = p_ItemID;
 END$$
 
-
 -- Check Low Stock Items ---
+DELIMITER $$
 CREATE PROCEDURE CheckLowStockItems()
 BEGIN
     -- Select items with stock lower than the minimum quantity
@@ -211,24 +191,6 @@ BEGIN
     JOIN CURRENT_STOCK cs ON i.ItemID = cs.ItemID
     WHERE cs.Quantity < i.Min_Quantity;
 END$$
-
-
--- Scheduled Event for Updating Quantities ---
-CREATE EVENT UpdateItemQuantity
-ON SCHEDULE EVERY 1 DAY
-DO
-BEGIN
-    UPDATE ITEM i
-    JOIN (
-        SELECT ItemID, 
-               SUM(Quantity) AS Total_Expired
-        FROM CURRENT_STOCK
-        WHERE Expiration_Date < CURDATE()
-        GROUP BY ItemID
-    ) expired ON i.ItemID = expired.ItemID
-    SET i.Quantity = GREATEST(0, i.Quantity - expired.Total_Expired);
-END$$
-
 
 -- Reset delimiter
 DELIMITER ;

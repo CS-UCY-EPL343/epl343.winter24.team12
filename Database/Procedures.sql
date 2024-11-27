@@ -59,16 +59,32 @@ CREATE PROCEDURE AddStock(
     IN p_ItemID INT,
     IN p_Quantity INT,
     IN p_Expiration_Date DATE,
-    IN p_Barcode BIGINT
+    IN p_Barcode VARCHAR(128)
 )
 BEGIN
-    INSERT INTO CURRENT_STOCK (ItemID, Quantity, Expiration_Date, Barcode)
-    VALUES (p_ItemID, p_Quantity, p_Expiration_Date, p_Barcode);
-
-    UPDATE ITEM
-    SET Quantity = Quantity + p_Quantity
-    WHERE ItemID = p_ItemID;
+    -- Check if a matching row exists
+    IF EXISTS (
+        SELECT 1
+        FROM CURRENT_STOCK
+        WHERE ItemID = p_ItemID
+          AND Expiration_Date = p_Expiration_Date
+          AND Barcode = p_Barcode
+    ) THEN
+        -- Update the Quantity for the existing row
+        UPDATE CURRENT_STOCK
+        SET Quantity = Quantity + p_Quantity
+        WHERE ItemID = p_ItemID
+          AND Expiration_Date = p_Expiration_Date
+          AND Barcode = p_Barcode;
+    ELSE
+        -- Insert a new row
+        INSERT INTO CURRENT_STOCK (ItemID, Quantity, Expiration_Date, Barcode)
+        VALUES (p_ItemID, p_Quantity, p_Expiration_Date, p_Barcode);
+    END IF;
 END$$
+
+DELIMITER ;
+
 
 -- Remove Stock Procedure ---
 DELIMITER $$
@@ -180,6 +196,21 @@ BEGIN
     DELETE FROM ITEM
     WHERE ItemID = p_ItemID;
 END$$
+
+
+--- Add a new Supplier ---
+DELIMITER $$
+CREATE PROCEDURE AddSupplier(
+    IN p_Supplier_Name VARCHAR(255),
+    IN p_Contact_Info VARCHAR(50),
+    IN p_Email VARCHAR(255),
+    IN p_Supplier_Address VARCHAR(255)
+)
+BEGIN
+    INSERT INTO SUPPLIER (Suppleir_Name, Contact_Info, Email, Supplier_Address)
+    VALUES (p_Supplier_Name, p_Contact_Info, p_Email, p_Supplier_Address);
+END$$
+
 
 -- Check Low Stock Items ---
 DELIMITER $$

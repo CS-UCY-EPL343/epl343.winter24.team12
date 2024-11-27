@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <!-- Required Meta Tags -->
@@ -40,10 +40,7 @@
                     <nav id="nav-menu-container">
                         <ul class="nav-menu">
                             <li class="menu-active"><a href="index.php">Home</a></li>
-                            <li><a href="backend/login.php?role=1">Administrator Login</a></li>
-                            <li><a href="backend/login.php?role=2">Doctor's Login</a></li>
-                            <li><a href="backend/login.php?role=3">Nurse Login</a></li>
-                            <li><a href="backend/login.php?role=4">Secretary Login</a></li>
+                            <li><a href="backend/login.php">Login</a></li>
                         </ul>
                     </nav><!-- #nav-menu-container -->
                 </div>
@@ -57,7 +54,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
-        
                     <h1>HIMAROS</h1>
                     <p>Hospital Inventory Management And Resource Optimization Software</p>
                 </div>

@@ -13,31 +13,33 @@ if (isset($_POST['login'])) {
     $stmt = $mysqli->prepare("SELECT UserID, User_Role FROM USERS WHERE Username = ? AND PWD = ?");
     $stmt->bind_param('ss', $username, $password);
     $stmt->execute();
-    $stmt->bind_result($user_id, $role);
+    $stmt->bind_result($user_id, $user_role);
     $rs = $stmt->fetch();
 
     if ($rs) {
         // Assign session variables
         $_SESSION['user_id'] = $user_id;
         $_SESSION['username'] = $username;
-        $_SESSION['User_Role'] = $role;
+        $_SESSION['role'] = $user_role;
 
         // Redirect based on role
-        switch ($role) {
-            case 1: // Admin
+        switch ($user_role) {
+            case 'admin':
                 header("Location: admin/admin_dashboard.php");
                 break;
-            case 2: // Doctor
+            case 'doctor':
                 header("Location: doctor/doc_dashboard.php");
                 break;
-            case 3: // Nurse
+            case 'nurse':
                 header("Location: nurse/nurse_dashboard.php");
                 break;
-            case 4: // Secretary
+            case 'secretary':
                 header("Location: secretary/secretary_dashboard.php");
                 break;
-            default:  s
-                // Redirect to a default page or show an error if the role is invalid
+            case 'storekeeper':
+                header("Location: storekeeper/store_dashboard.php");
+                break;
+            default:
                 $err = "Invalid Role. Please contact system administrator.";
         }
         exit;
@@ -45,92 +47,119 @@ if (isset($_POST['login'])) {
         // Invalid username or password
         $err = "Access Denied: Invalid Username or Password";
     }
-}?>
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <!-- Custom Styles -->
     <style>
         body {
-            background: linear-gradient(135deg, #89f7fe, #66a6ff); /* Gradient background */
-            min-height: 100vh;
-            font-family: 'Poppins', sans-serif; /* Custom font */
             display: flex;
-            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f8fc;
+        }
+        .left-section {
+            width: 50%;
+            background-color: #f4f8fc;
+            display: flex;
             align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .left-section img {
+            max-width: 250px;
+        }
+        .right-section {
+            width: 50%;
+            background-color: #007bff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .card {
-            border: none;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Card shadow */
-            background-color: #ffffff;
-        }
-        .card-body {
-            padding: 2rem;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #66a6ff, #89f7fe); /* Gradient button */
-            border: none;
-            font-size: 1.1rem;
-            padding: 0.75rem;
-            border-radius: 30px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .btn-primary:hover {
-            transform: scale(1.05); /* Button hover effect */
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        h3 {
-            font-weight: bold;
-            color: #444444;
-        }
-        .alert {
+            background-color: white;
             border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 40px 30px;
+            width: 350px;
+            text-align: center;
         }
-        .form-control {
-            border-radius: 10px;
+        .card h3 {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
         }
         .form-group label {
+            display: block;
+            text-align: left;
             font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
         }
-        .container {
-            margin-top: 3rem;
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            outline: none;
+        }
+        .btn-primary {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #66a6ff, #89f7fe);
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="text-center">Welcome to HIMAROS!</h3>
-                        <?php if (isset($err)) { ?>
-                            <div class="alert alert-danger text-center">
-                                <?php echo htmlspecialchars($err); ?>
-                            </div>
-                        <?php } ?>
-                        <form method="post">
-                            <input type="hidden" name="expected_role" value="<?php echo htmlspecialchars($_GET['role'] ?? ''); ?>">
-
-                            <div class="form-group">
-                                <label for="username">Username</label>
-                                <input type="text" name="username" id="username" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" name="password" id="password" class="form-control" required>
-                            </div>
-                            <button type="submit" name="login" class="btn btn-primary btn-block">Login</button>
-                        </form>
-                    </div>
+    <div class="left-section">
+        <img src="assets/images/logo.png" alt="OKYPY Logo">
+    </div>
+    <div class="right-section">
+        <div class="card">
+            <h3>Welcome to HIMAROS!</h3>
+            <?php if (isset($err)) { ?>
+                <div class="alert alert-danger text-center">
+                    <?php echo htmlspecialchars($err); ?>
                 </div>
-            </div>
+            <?php } ?>
+            <form method="post">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" required>
+                </div>
+                <button type="submit" name="login" class="btn-primary">Login</button>
+            </form>
         </div>
     </div>
 </body>

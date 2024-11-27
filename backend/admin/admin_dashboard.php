@@ -2,7 +2,7 @@
 session_start();
 include(__DIR__ . '/../../config/database.php'); 
 include('../assets/inc/checklogin.php');
-checklogin(1); // Role 1 = Admin
+checklogin('admin'); // Role = 'admin'
 
 $user_id = $_SESSION['user_id'];
 $mysqli = Database::getConnection();
@@ -27,7 +27,6 @@ $mysqli = Database::getConnection();
                     </div>
 
                     <div class="row">
-                        <!-- Hospital Employees -->
                         <div class="col-md-6 col-xl-4">
                             <div class="widget-rounded-circle card-box">
                                 <div class="row">
@@ -39,8 +38,7 @@ $mysqli = Database::getConnection();
                                     <div class="col-6">
                                         <div class="text-right">
                                             <?php
-                                            $result = "SELECT COUNT(*) FROM USERS WHERE Role IN (2, 3, 4)";
-                                            $stmt = $mysqli->prepare($result);
+                                            $stmt = $mysqli->prepare("SELECT COUNT(*) FROM USERS WHERE User_Role IN ('doctor', 'nurse', 'secretary')");
                                             $stmt->execute();
                                             $stmt->bind_result($employees);
                                             $stmt->fetch();
@@ -55,7 +53,6 @@ $mysqli = Database::getConnection();
                         </div>
                     </div>
 
-                    <!-- Recent Employees -->
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="card-box">
@@ -72,21 +69,15 @@ $mysqli = Database::getConnection();
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $ret = "SELECT * FROM USERS WHERE Role IN (2, 3, 4) ORDER BY Created_At DESC LIMIT 10";
-                                            $stmt = $mysqli->prepare($ret);
+                                            $stmt = $mysqli->prepare("SELECT * FROM USERS WHERE User_Role IN ('doctor', 'nurse', 'secretary') ORDER BY Created_At DESC LIMIT 10");
                                             $stmt->execute();
                                             $res = $stmt->get_result();
                                             while ($row = $res->fetch_object()) {
                                                 ?>
                                                 <tr>
                                                     <td><?php echo $row->First_Name . ' ' . $row->Last_Name; ?></td>
-                                                    <td><?php echo $row->Email; ?><.
-                                                    /td>
-                                                    <td>
-                                                        <?php
-                                                        echo ($row->Role == 2 ? "Doctor" : ($row->Role == 3 ? "Nurse" : "Secretary"));
-                                                        ?>
-                                                    </td>
+                                                    <td><?php echo $row->Email; ?></td>
+                                                    <td><?php echo ucfirst($row->User_Role); ?></td>
                                                     <td>
                                                         <a href="admin_view_user.php?UserID=<?php echo $row->UserID; ?>" class="btn btn-sm btn-primary">View</a>
                                                     </td>

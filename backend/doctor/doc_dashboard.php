@@ -5,113 +5,348 @@ include(__DIR__ . '/../../config/database.php');
 include('../assets/inc/checklogin.php');
 checklogin('doctor'); // Role = 'doctor'
 
-$user_id = $_SESSION['user_id'];
 $mysqli = Database::getConnection();
-?> 
+
+// Data for the cards
+$out_of_stock = [];
+$low_stock = [];
+$expired = [];
+
+// Fetch out-of-stock items
+$stmt = $mysqli->prepare("
+    SELECT i.Item_Name 
+    FROM ITEM i
+    JOIN CURRENT_STOCK cs ON i.ItemID = cs.ItemID
+    WHERE cs.Quantity = 0
+    LIMIT 10
+");
+$stmt->execute();
+$result = $stmt->get_result();
+while ($row = $result->fetch_assoc()) {
+    $out_of_stock[] = $row['Item_Name'];
+}
+$stmt->close();
+
+// Fetch low-stock items (grouped by item, excluding expired items)
+$stmt = $mysqli->prepare("
+    SELECT i.Item_Name, SUM(cs.Quantity) AS Total_Quantity
+    FROM ITEM i
+    JOIN CURRENT_STOCK cs ON i.ItemID = cs.ItemID
+    WHERE cs.Quantity > 0 AND cs.Quantity < i.Min_Quantity AND cs.Expiration_Date >= CURDATE()
+    GROUP BY i.Item_Name
+    LIMIT 10
+");
+$stmt->execute();
+$result = $stmt->get_result();
+while ($row = $result->fetch_assoc()) {
+    $low_stock[] = $row['Item_Name'] . " (Qty: " . $row['Total_Quantity'] . ")";
+}
+$stmt->close();
+
+
+// Fetch expired items
+$stmt = $mysqli->prepare("
+    SELECT i.Item_Name, cs.Expiration_Date
+    FROM ITEM i
+    JOIN CURRENT_STOCK cs ON i.ItemID = cs.ItemID
+    WHERE cs.Expiration_Date < CURDATE()
+    LIMIT 10
+");
+$stmt->execute();
+$result = $stmt->get_result();
+while ($row = $result->fetch_assoc()) {
+    $expired[] = $row['Item_Name'] . " (Expired: " . $row['Expiration_Date'] . ")";
+}
+$stmt->close();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
-<?php include("../assets/inc/head.php"); ?>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Include Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+        }
+
+        /* Top Navigation Bar */
+        .navbar {
+            background-color: #1a4f6e;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 30px;
+            align-items: center;
+            height: 60px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .navbar .icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .navbar .icons i {
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Left-Side Navigation Bar */
+        .sidebar {
+            width: 180px;
+            background-color: #1a4f6e;
+            height: 100vh;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+            padding-left: 20px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            gap: 10px;
+            padding: 10px 0;
+            width: 100%;
+        }
+
+        .sidebar a:hover {
+            background-color: #216491;
+            border-radius: 5px;
+        }
+
+        .sidebar a.active {
+            background-color: #ffc107;
+            color: #1a4f6e;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .sidebar i {
+            font-size: 18px;
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            margin-top: 80px;
+            margin-left: 200px; /* Adjusted for sidebar width */
+            padding: 20px;
+            width: calc(100% - 200px);
+        }
+
+        /* Scan Section */
+        .scan-box {
+            background-color: #216491;
+            color: white;
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 35px;
+        }
+
+        .scan-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .scan-section i {
+            font-size: 70px;
+            color: white;
+            position: absolute;
+            left: 250px;
+        }
+
+        .scan-section button {
+            background-color: #216491;
+            color: white;
+            padding: 15px 80px;
+            border: 2px solid white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .scan-section button:hover {
+            background-color: #1a4f6e;
+            border-color: #ffc107;
+        }
+
+        /* Cards Section */
+        .cards-outer-box {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .cards-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 30%;
+            padding: 20px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card ul {
+            list-style-type: decimal;
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .card ul li {
+            padding: 5px 0;
+        }
+    </style>
+</head>
+
 <body>
-    <div id="wrapper">
-        <?php include('../assets/inc/nav.php'); ?>
-        <?php include('../assets/inc/sidebar.php'); ?>
+    <!-- Top Navigation Bar -->
+    <div class="navbar">
+        <div class="logo">
+            <strong>HIMAROS</strong>
+        </div>
+        <div class="icons">
+            <i class="fas fa-folder" title="Files"></i>
+            <i class="fas fa-cog" title="Settings"></i>
+            <i class="fas fa-user-circle" title="Profile"></i>
+        </div>
+    </div>
 
-        <div class="content-page">
-            <div class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="page-title-box">
-                                <h4 class="page-title">Doctor Dashboard</h4>
-                            </div>
-                        </div>
-                    </div>
+    <!-- Left Side Navigation Bar -->
+    <div class="sidebar">
+        <a href="#" class="active" title="Dashboard">
+            <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a href="#" title="Inventory">
+            <i class="fas fa-boxes"></i> Inventory
+        </a>
+        <a href="#" title="Operations">
+            <i class="fas fa-stethoscope"></i> Operations
+        </a>
+        <a href="#" title="Suppliers">
+            <i class="fas fa-truck"></i> Suppliers
+        </a>
+        <a href="#" title="Reports">
+            <i class="fas fa-chart-line"></i> Reports
+        </a>
+        <a href="#" title="Users">
+            <i class="fas fa-users"></i> Users
+        </a>
+        <a href="#" title="Settings">
+            <i class="fas fa-cog"></i> Settings
+        </a>
+    </div>
 
-                    <div class="row">
-                        <div class="col-md-6 col-xl-4">
-                            <div class="widget-rounded-circle card-box">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="avatar-lg rounded-circle bg-soft-danger border-danger border">
-                                            <i class="mdi mdi-surgical-mask font-22 avatar-title text-danger"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="text-right">
-                                            <?php
-                                            $stmt = $mysqli->prepare("SELECT COUNT(*) FROM OPERATION");
-                                            $stmt->execute();
-                                            $stmt->bind_result($operationCount);
-                                            $stmt->fetch();
-                                            $stmt->close();
-                                            ?>
-                                            <h3 class="text-dark mt-1"><?php echo $operationCount; ?></h3>
-                                            <p class="text-muted mb-1 text-truncate">Total Operations</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <h1>Dashboard</h1>
 
-                        <div class="col-md-6 col-xl-4">
-                            <div class="widget-rounded-circle card-box">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="avatar-lg rounded-circle bg-soft-success border-success border">
-                                            <i class="mdi mdi-pill font-22 avatar-title text-success"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="text-right">
-                                            <?php
-                                            $stmt = $mysqli->prepare("SELECT COUNT(*) FROM CURRENT_STOCK");
-                                            $stmt->execute();
-                                            $stmt->bind_result($stockCount);
-                                            $stmt->fetch();
-                                            $stmt->close();
-                                            ?>
-                                            <h3 class="text-dark mt-1"><?php echo $stockCount; ?></h3>
-                                            <p class="text-muted mb-1 text-truncate">Stock Items</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Scan Section -->
+        <div class="outer-container scan-box">
+            <div class="scan-section">
+                <i class="fas fa-qrcode"></i>
+                <button onclick="location.href='view_items.php';">SCAN ITEMS</button>
+            </div>
+        </div>
 
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="card-box">
-                                <h4 class="header-title mb-3">Recent Operations</h4>
-                                <div class="table-responsive">
-                                    <table class="table table-borderless table-hover">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>Operation Type</th>
-                                                <th>Performed At</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            $stmt = $mysqli->prepare("SELECT Operation_Type, Performed_At FROM OPERATION ORDER BY Performed_At DESC LIMIT 10");
-                                            $stmt->execute();
-                                            $stmt->bind_result($type, $performedAt);
-                                            while ($stmt->fetch()) {
-                                                echo "<tr>
-                                                        <td>$type</td>
-                                                        <td>$performedAt</td>
-                                                    </tr>";
-                                            }
-                                            $stmt->close();
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Cards Section -->
+        <div class="cards-outer-box">
+            <div class="cards-container">
+                <!-- Out of Stock -->
+                <div class="card">
+                    <h3>Out of Stock</h3>
+                    <ul>
+                        <?php foreach ($out_of_stock as $item): ?>
+                            <li><?php echo htmlspecialchars($item); ?></li>
+                        <?php endforeach; ?>
+                        <?php if (empty($out_of_stock)): ?>
+                            <li>No items</li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+
+                <!-- Low Stock -->
+                <div class="card">
+                    <h3>Low Stock</h3>
+                    <ul>
+                        <?php foreach ($low_stock as $item): ?>
+                            <li><?php echo htmlspecialchars($item); ?></li>
+                        <?php endforeach; ?>
+                        <?php if (empty($low_stock)): ?>
+                            <li>No items</li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+
+                <!-- Expired -->
+                <div class="card">
+                    <h3>Expired</h3>
+                    <ul>
+                        <?php foreach ($expired as $item): ?>
+                            <li><?php echo htmlspecialchars($item); ?></li>
+                        <?php endforeach; ?>
+                        <?php if (empty($expired)): ?>
+                            <li>No items</li>
+                        <?php endif; ?>
+                    </ul>
                 </div>
             </div>
-            <?php include('../assets/inc/footer.php'); ?>
-  
+        </div>
+    </div>
+</body>
+
+</html>

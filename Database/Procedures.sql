@@ -23,17 +23,16 @@ BEGIN
 
     -- Count existing usernames starting with the base
     SELECT COUNT(*) INTO usernameCount
-    FROM USERS_NEW
+    FROM USERS
     WHERE Username LIKE CONCAT(baseUsername, '%');
 
     -- Generate the unique username
     SET uniqueUsername = CONCAT(baseUsername, LPAD(usernameCount + 1, 2, '0'));
 
     -- Insert the new user
-    INSERT INTO USERS_NEW (First_Name, Last_Name, Username, PWD, Email, User_Role, Gender)
+    INSERT INTO USERS (First_Name, Last_Name, Username, PWD, Email, User_Role, Gender)
     VALUES (p_First_Name, p_Last_Name, uniqueUsername, p_PWD, p_Email, p_User_Role, p_Gender);
 END$$
-
 
 
 -- Delete User Procedure ---
@@ -41,9 +40,8 @@ CREATE PROCEDURE DeleteUser(
     IN p_Username VARCHAR(50)
 )
 BEGIN
-    DELETE FROM USERS_NEW WHERE Username = p_Username;
+    DELETE FROM USERS WHERE Username = p_Username;
 END$$
-
 
 
 -- Activate/Deactivate User Procedure ---
@@ -52,11 +50,10 @@ CREATE PROCEDURE UpdateUserStatus(
     IN p_NewStatus ENUM('Active', 'Inactive')
 )
 BEGIN
-    UPDATE USERS_NEW 
+    UPDATE USERS 
     SET User_Status = p_NewStatus
     WHERE Username = p_Username;
 END$$
-
 
 
 -- Add Stock Procedure ---
@@ -74,7 +71,6 @@ BEGIN
     SET Quantity = Quantity + p_Quantity
     WHERE ItemID = p_ItemID;
 END$$
-
 
 
 -- Remove Stock Procedure ---
@@ -129,7 +125,6 @@ BEGIN
 END$$
 
 
-
 --- Update Item Quantity
 CREATE PROCEDURE UpdateItemQuantity(
     IN p_ItemID INT,
@@ -148,7 +143,6 @@ BEGIN
 END$$
 
 
-
 -- Add New Item Procedure ---
 CREATE PROCEDURE AddNewItem(
     IN p_Category VARCHAR(255),
@@ -164,7 +158,6 @@ BEGIN
     INSERT INTO ITEM (Category, Item_Name, Picture_URL, Cost, Item_Type, Item_Description, Min_Quantity, SupplierID)
     VALUES (p_Category, p_Item_Name, p_Picture_URL, p_Cost, p_Item_Type, p_Item_Description, p_Min_Quantity, p_SupplierID);
 END$$
-
 
 
 --- Update Item Information ---
@@ -194,7 +187,6 @@ BEGIN
 END$$
 
 
-
 -- Delete an Item from Inventory ---
 CREATE PROCEDURE DeleteItem(
     IN p_ItemID INT
@@ -210,7 +202,6 @@ BEGIN
 END$$
 
 
-
 -- Check Low Stock Items ---
 CREATE PROCEDURE CheckLowStockItems()
 BEGIN
@@ -220,7 +211,6 @@ BEGIN
     JOIN CURRENT_STOCK cs ON i.ItemID = cs.ItemID
     WHERE cs.Quantity < i.Min_Quantity;
 END$$
-
 
 
 -- Scheduled Event for Updating Quantities ---
@@ -238,7 +228,6 @@ BEGIN
     ) expired ON i.ItemID = expired.ItemID
     SET i.Quantity = GREATEST(0, i.Quantity - expired.Total_Expired);
 END$$
-
 
 
 -- Reset delimiter

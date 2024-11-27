@@ -48,3 +48,4 @@ CALL AddStock(
     '2024-08-21',   -- Expiration_Date: Expired (before 27/11/2024)
     '01089352212007361725093010230408A' -- Barcode
 );
+

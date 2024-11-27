@@ -8,7 +8,7 @@ class Database {
             $servername = "127.0.0.1";
             $username = "root"; 
             $password = ""; 
-            $dbname = "HIMAROS_DB"; 
+            $dbname = "himaros_db"; 
 
             // Create connection
             self::$connection = new mysqli($servername, $username, $password, $dbname);

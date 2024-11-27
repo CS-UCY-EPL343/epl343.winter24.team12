@@ -10,7 +10,7 @@ if (isset($_POST['login'])) {
     $password = sha1($_POST['password']); // Hash the password using SHA1
 
     // Prepare and execute the query
-    $stmt = $mysqli->prepare("SELECT UserID, Role FROM USERS WHERE Username = ? AND Password = ?");
+    $stmt = $mysqli->prepare("SELECT UserID, User_Role FROM USERS WHERE Username = ? AND PWD = ?");
     $stmt->bind_param('ss', $username, $password);
     $stmt->execute();
     $stmt->bind_result($user_id, $role);
@@ -20,7 +20,7 @@ if (isset($_POST['login'])) {
         // Assign session variables
         $_SESSION['user_id'] = $user_id;
         $_SESSION['username'] = $username;
-        $_SESSION['role'] = $role;
+        $_SESSION['User_Role'] = $role;
 
         // Redirect based on role
         switch ($role) {
@@ -36,7 +36,7 @@ if (isset($_POST['login'])) {
             case 4: // Secretary
                 header("Location: secretary/secretary_dashboard.php");
                 break;
-            default:
+            default:  s
                 // Redirect to a default page or show an error if the role is invalid
                 $err = "Invalid Role. Please contact system administrator.";
         }

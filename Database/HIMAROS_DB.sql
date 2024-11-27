@@ -103,12 +103,3 @@ CREATE TABLE UPDATES (
   FOREIGN KEY(ItemID) REFERENCES ITEM(ItemID)
      ON UPDATE CASCADE
 );
-
---- ADD USERS ---
-
-INSERT INTO USERS (First_Name, Last_Name, Email, Role, Username, Password, Gender)
-VALUES
-('Admin', 'User', 'admin@example.com', 1, 'admin', SHA1('adminpass'), 'Male'),
-('Doctor', 'User', 'doctor@example.com', 2, 'doctor', SHA1('doctorpass'), 'Male'),
-('Nurse', 'User', 'nurse@example.com', 3, 'nurse', SHA1('nursepass'), 'Female'),
-('Secretary', 'User', 'secretary@example.com', 4, 'secretary', SHA1('secretarypass'), 'Female');

@@ -1,24 +1,28 @@
+-- Create the database if it doesn't exist
+CREATE DATABASE IF NOT EXISTS HIMAROS_DB;
+
+-- Switch to the HIMAROS database
 USE HIMAROS_DB;
 
 -- USER TABLE
-CREATE TABLE USERS (
+CREATE TABLE USERS_NEW (
   UserID INT NOT NULL AUTO_INCREMENT,
   First_Name VARCHAR(50) NOT NULL,
   Last_Name VARCHAR(50) NOT NULL,
+  Username VARCHAR(101) GENERATED ALWAYS AS (CONCAT(First_Name, ' ', Last_Name)) STORED,
+  PWD VARCHAR(255) NOT NULL,
   Email VARCHAR(255) NOT NULL UNIQUE,
-  Role INT NOT NULL,
-  Username VARCHAR(50) NOT NULL UNIQUE,
-  Password VARCHAR(255) NOT NULL,
+  User_Role ENUM('admin', 'doctor', 'storekeeper', 'nurse', 'secretary') NOT NULL,
   Gender ENUM('Male', 'Female', 'Other') NOT NULL,
   Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  Status ENUM('Active', 'Inactive') DEFAULT 'Active',
+  User_Status ENUM('Active', 'Inactive') DEFAULT 'Active',
   PRIMARY KEY (UserID)
 );
 
 -- OPERATION TABLE
 CREATE TABLE OPERATION (
   OperationID INT NOT NULL AUTO_INCREMENT,
-  Type VARCHAR(255) NOT NULL,
+  Operation_Type VARCHAR(255) NOT NULL,
   Performed_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (OperationID)
 );
@@ -26,10 +30,10 @@ CREATE TABLE OPERATION (
 -- SUPPLIER TABLE
 CREATE TABLE SUPPLIER (
   SupplierID INT NOT NULL AUTO_INCREMENT,
-  Name VARCHAR(50) NOT NULL,
+  Suppleir_Name VARCHAR(255) NOT NULL,
   Contact_Info VARCHAR(50) NOT NULL,
   Email VARCHAR(255) NOT NULL UNIQUE,
-  Address VARCHAR(255) NOT NULL,
+  Supplier_Address VARCHAR(255) NOT NULL,
   PRIMARY KEY (SupplierID)
 );
 
@@ -37,11 +41,12 @@ CREATE TABLE SUPPLIER (
 CREATE TABLE ITEM (
   ItemID INT NOT NULL AUTO_INCREMENT,
   Category VARCHAR(255) NOT NULL,
-  Name VARCHAR(50) NOT NULL UNIQUE,
+  Item_Name VARCHAR(50) NOT NULL UNIQUE,
   Picture_URL VARCHAR(255),
   Cost DECIMAL(10, 2) NOT NULL,
-  Type ENUM('Disposable', 'Reusable', 'Other') NOT NULL,
-  Description TEXT NOT NULL,
+  Item_Type ENUM('Disposable', 'Reusable', 'Other') NOT NULL,
+  Item_Description TEXT NOT NULL,
+  Min_Quantity INT NOT NULL,
   SupplierID INT NOT NULL,
   Being_Used ENUM('Yes', 'No') DEFAULT 'Yes',
   PRIMARY KEY(ItemID),
@@ -98,6 +103,8 @@ CREATE TABLE UPDATES (
   FOREIGN KEY(ItemID) REFERENCES ITEM(ItemID)
      ON UPDATE CASCADE
 );
+
+--- ADD USERS ---
 
 INSERT INTO USERS (First_Name, Last_Name, Email, Role, Username, Password, Gender)
 VALUES

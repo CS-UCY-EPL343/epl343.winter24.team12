@@ -142,7 +142,7 @@ $stmt->close();
 
         .sidebar a:hover {
             background-color: #216491;
-            border-radius: 5px;
+            border-radius: 10px;
         }
 
         .sidebar a.active {
@@ -150,6 +150,9 @@ $stmt->close();
             color: #1a4f6e;
             font-weight: bold;
             border-radius: 5px;
+            margin-left: -10px; /* Added margin to shift it slightly left */
+            padding: 10px 1px;
+            flex-direction: column;
         }
 
         .sidebar i {
@@ -271,13 +274,13 @@ $stmt->close();
         <a href="#" class="active" title="Dashboard">
             <i class="fas fa-home"></i> Dashboard
         </a>
-        <a href="#" title="Inventory">
+        <a href="doc_inventory.php" title="Inventory">
             <i class="fas fa-boxes"></i> Inventory
         </a>
         <a href="#" title="Operations">
             <i class="fas fa-stethoscope"></i> Operations
         </a>
-        <a href="#" title="Suppliers">
+        <a href="doc_supplier.php" title="Suppliers">
             <i class="fas fa-truck"></i> Suppliers
         </a>
         <a href="#" title="Reports">

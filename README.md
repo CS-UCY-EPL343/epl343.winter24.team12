@@ -46,7 +46,10 @@ HIMAROS is designed to streamline inventory and resource management for hospital
 
 - **Inventory Tracking**:  
   - Add, update, delete, and search for items.  
-  - Monitor stock levels and expiration dates.  
+  - Monitor stock levels and expiration dates.
+
+- **Dashboard Interface**:  
+  - Summarize key statistics like low-stock items, expired items, and usage trends.   
 
 ### In Progress  
 - **Supplier Management**:  
@@ -55,10 +58,7 @@ HIMAROS is designed to streamline inventory and resource management for hospital
 
 - **Enhanced Reporting Features**:  
   - Include audit logs and department-based usage analysis.  
-
-- **Dashboard Interface**:  
-  - Summarize key statistics like low-stock items, expired items, and usage trends.  
-
+ 
 - **Alerts and Notifications**:  
   - Low-stock and expiration notifications for efficient inventory monitoring.  
 
@@ -71,7 +71,7 @@ HIMAROS is designed to streamline inventory and resource management for hospital
 
 - **Frontend**: JavaScript, CSS  
 - **Backend**: PHP  
-- **Database**: SQL Server Management Studio (SSMS)  
+- **Database**: SQL Server Management Studio (SSMS), MySQL  
 - **Project Management**: KanbanFlow, MS Project  
 
 ---
@@ -80,14 +80,14 @@ HIMAROS is designed to streamline inventory and resource management for hospital
 
 ### Completed Modules  
 - User Authentication and Role Assignment  
-- Basic Inventory Management  
+- Basic Inventory Management
+- Dashboard Interface
 
 ### Modules in Progress  
 - Supplier Integration  
 - Enhanced Reporting Features  
 - Alerts and Notifications  
-- Basic Reports  
-- Dashboard Interface  
+- Basic Reports 
 
 ---
 

@@ -296,10 +296,15 @@ $stmt->close();
         <h1>Dashboard</h1>
 
         <!-- Scan Section -->
-        <div class="outer-container scan-box">
+        <div class="scan-box">
             <div class="scan-section">
                 <i class="fas fa-qrcode"></i>
-                <button onclick="location.href='view_items.php';">SCAN ITEMS</button>
+                <div>
+                    <!-- Button to View Item Info -->
+                    <button onclick="location.href='../common/view_item_info.php';">View Item Info</button>
+                    <!-- Button to Use Item -->
+                    <button onclick="location.href='../common/use_item.php';" style="margin-left: 15px;">Use Item</button>
+                </div>
             </div>
         </div>
 

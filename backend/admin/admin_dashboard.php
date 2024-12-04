@@ -5,6 +5,7 @@ include(__DIR__ . '/../../config/database.php');
 include('../assets/inc/checklogin.php');
 checklogin('admin'); // Role = 'admin'
 
+
 $mysqli = Database::getConnection();
 
 // Data for the cards
@@ -208,30 +209,34 @@ $stmt->close();
             border-color: #ffc107;
         }
 
-        /* Cards Section */
-        .cards-outer-box {
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
         .cards-container {
             display: flex;
             justify-content: space-around;
             gap: 20px;
         }
 
+        /* Cards Section */
+        .cards-outer-box {
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-around; /* Space the cards evenly */
+            gap: 20px; /* Add some spacing between cards */
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap; /* Allows wrapping if there isn't enough space */
+        }
+
         .card {
             background-color: white;
             border: 1px solid #ddd;
             border-radius: 8px;
-            width: 30%;
+            flex: 1; /* Make all cards equal width */
+            min-width: 250px; /* Ensure a minimum width for smaller screens */
+            max-width: 30%; /* Limit maximum width for larger screens */
             padding: 20px;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-            height: 200px;
-            overflow-y: auto;
         }
 
         .card h3 {
@@ -240,15 +245,20 @@ $stmt->close();
             margin-bottom: 10px;
         }
 
-        .card ul {
-            list-style-type: decimal;
-            padding-left: 20px;
-            margin: 0;
+        .card table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        .card ul li {
-            padding: 5px 0;
+        .card table td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
         }
+
+        .card table td:last-child {
+            text-align: right;
+        }
+
     </style>
 </head>
 
@@ -311,50 +321,71 @@ $stmt->close();
             </div>
         </div>
 
-        <!-- Cards Section -->
-        <div class="cards-outer-box">
-            <div class="cards-container">
-                <!-- Out of Stock -->
-                <div class="card">
-                    <h3>Out of Stock</h3>
-                    <ul>
-                        <?php foreach ($out_of_stock as $item): ?>
-                            <li><?php echo htmlspecialchars($item); ?></li>
-                        <?php endforeach; ?>
-                        <?php if (empty($out_of_stock)): ?>
-                            <li>No items</li>
-                        <?php endif; ?>
-                    </ul>
-                </div>
-
-                <!-- Low Stock -->
-                <div class="card">
-                    <h3>Low Stock</h3>
-                    <ul>
-                        <?php foreach ($low_stock as $item): ?>
-                            <li><?php echo htmlspecialchars($item); ?></li>
-                        <?php endforeach; ?>
-                        <?php if (empty($low_stock)): ?>
-                            <li>No items</li>
-                        <?php endif; ?>
-                    </ul>
-                </div>
-
-                <!-- Expired -->
-                <div class="card">
-                    <h3>Expired</h3>
-                    <ul>
-                        <?php foreach ($expired as $item): ?>
-                            <li><?php echo htmlspecialchars($item); ?></li>
-                        <?php endforeach; ?>
-                        <?php if (empty($expired)): ?>
-                            <li>No items</li>
-                        <?php endif; ?>
-                    </ul>
-                </div>
-            </div>
+    <!-- Out-of-Stock Items -->
+    <div class="cards-outer-box">
+        <div class="card">
+            <h3 style="color: #E63946">Out-of-Stock Items</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tbody>
+                    <?php foreach ($out_of_stock as $item): ?>
+                        <tr>
+                            <td style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">
+                                <?php echo htmlspecialchars($item); ?>
+                            </td>
+                            <td style="text-align: right; padding: 8px; border-bottom: 1px solid #ddd;">
+                                <button onclick="location.href='../common/full_item_info.php?item=<?php echo urlencode($item); ?>';" style="padding: 5px 10px; font-size: 14px; border-radius: 4px; border: 1px solid #ccc; cursor: pointer; background-color: #1a4f6e; color: white;">View Full Info</button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
-    </div>
+
+        <!-- Low-Stock Items -->
+        <div class="card">
+            <h3 style="color: #E9B949">Low-Stock Items</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tbody>
+                    <?php foreach ($low_stock as $item): 
+                        // Split the name and quantity
+                        $parts = explode(" (Qty: ", $item);
+                        $item_name = $parts[0]; // Clean item name
+                    ?>
+                        <tr>
+                            <td style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">
+                                <?php echo htmlspecialchars($item); ?>
+                            </td>
+                            <td style="text-align: right; padding: 8px; border-bottom: 1px solid #ddd;">
+                                <button onclick="location.href='../common/full_item_info.php?item=<?php echo urlencode($item_name); ?>';" style="padding: 5px 10px; font-size: 14px; border-radius: 4px; border: 1px solid #ccc; cursor: pointer; background-color: #1a4f6e; color: white;">View Full Info</button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Expired Items -->
+        <div class="card">
+            <h3 style="color: #D9822B">Expired Items</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tbody>
+                    <?php foreach ($expired as $item): 
+                        // Split the name and expiration
+                        $parts = explode(" (Expired: ", $item);
+                        $item_name = $parts[0]; // Clean item name
+                    ?>
+                        <tr>
+                            <td style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">
+                                <?php echo htmlspecialchars($item); ?>
+                            </td>
+                            <td style="text-align: right; padding: 8px; border-bottom: 1px solid #ddd;">
+                                <button onclick="location.href='../common/full_item_info.php?item=<?php echo urlencode($item_name); ?>';" style="padding: 5px 10px; font-size: 14px; border-radius: 4px; border: 1px solid #ccc; cursor: pointer; background-color: #1a4f6e; color: white;">View Full Info</button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
 </body>
 
 </html>

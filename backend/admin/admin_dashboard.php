@@ -274,19 +274,19 @@ $stmt->close();
         <a href="#" class="active" title="Dashboard">
             <i class="fas fa-home"></i> Dashboard
         </a>
-        <a href="#" title="Inventory">
+        <a href="admin_inventory.php" title="Inventory">
             <i class="fas fa-boxes"></i> Inventory
         </a>
-        <a href="#" title="Operations">
+        <a href="admin_operation.php" title="Operations">
             <i class="fas fa-stethoscope"></i> Operations
         </a>
-        <a href="#" title="Suppliers">
+        <a href="admin_supplier.php" title="Suppliers">
             <i class="fas fa-truck"></i> Suppliers
         </a>
-        <a href="#" title="Reports">
+        <a href="admin_reports.php" title="Reports">
             <i class="fas fa-chart-line"></i> Reports
         </a>
-        <a href="#" title="Users">
+        <a href="admin_users" title="Users">
             <i class="fas fa-users"></i> Users
         </a>
         <a href="#" title="Settings">

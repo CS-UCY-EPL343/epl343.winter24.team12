@@ -281,7 +281,7 @@ $stmt->close();
         <a href="doc_inventory.php" title="Inventory">
             <i class="fas fa-boxes"></i> Inventory
         </a>
-        <a href="#" title="Operations">
+        <a href="doc_operations.php" title="Operations">
             <i class="fas fa-stethoscope"></i> Operations
         </a>
         <a href="doc_supplier.php" title="Suppliers">

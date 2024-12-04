@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include(__DIR__ . '/../../config/database.php'); 
+include(__DIR__ . '/../../config/database.php');
 include('../assets/inc/checklogin.php');
 checklogin('admin'); // Role = 'admin'
 
@@ -216,10 +216,7 @@ $stmt->close();
             justify-content: center;
             align-items: center;
             width: 80%;
-            height: 50%
-                /* Match the progress bar width */
-                max-width: 100%;
-            margin: 10px auto;
+            height: 50% margin: 10px auto;
             /* Center the box */
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
         }
@@ -231,32 +228,51 @@ $stmt->close();
             width: 100%;
         }
 
+        .button-container {
+            display: flex;
+            /* Flexbox for layout */
+            gap: 30px;
+            /* Increase spacing between buttons */
+            justify-content: center;
+            /* Center buttons horizontally */
+            flex-wrap: wrap;
+            /* Allow wrapping on smaller screens */
+        }
+
+
+
         .view-item-btn {
-            display: block;
             background-color: #216491;
-            /* Bootstrap primary blue */
+            /* Match dashboard button background */
             color: white;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 15px;
-            text-align: center;
+            /* White text */
+            padding: 15px 80px;
+            /* Same padding as dashboard buttons */
             border: 2px solid white;
-            border-radius: 8px;
-            width: 80%;
-            /* Same width as the progress bar */
-            margin: 20px auto;
-            /* Center it */
+            /* White border */
+            border-radius: 4px;
+            /* Rounded corners */
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* Pointer cursor */
+            font-size: 26px;
+            /* Same font size as dashboard buttons */
+            font-weight: bold;
+            /* Bold text */
+            text-align: center;
+            /* Center align text */
             transition: all 0.3s ease;
+            /* Smooth transition for hover effects */
+            width: auto;
+            /* Allow flexibility in button width */
         }
 
         .view-item-btn:hover {
-            background-color: #0056b3;
-            /* Darker blue for hover */
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            background-color: #1a4f6e;
+            /* Slightly darker blue on hover */
+            border-color: #ffc107;
+            /* Yellow border on hover */
         }
+
 
         /* Inventory Table */
         .content {
@@ -369,12 +385,14 @@ $stmt->close();
             </div>
 
             <div class="scan-box">
-                <button class="view-item-btn" onclick="location.href='../common/view_item_info.php';">
-                    View Item Info
-                </button>
-                <button class="view-item-btn" onclick="location.href='../common/add_item.php';">
-                    Add Item
-                </button>
+                <div class="button-container">
+                    <button class="view-item-btn" onclick="location.href='../common/view_item_info.php';">
+                        View Item Info
+                    </button>
+                    <button class="view-item-btn" onclick="location.href='../common/add_item.php';">
+                        Add Item
+                    </button>
+                </div>
             </div>
 
             <!-- Search Bar -->

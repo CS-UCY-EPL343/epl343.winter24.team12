@@ -335,7 +335,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </script>
 
     <div class="dashboard-container">
-        <h1>Add New User</h1>
+        <h1>Users / Add New User</h1>
         <div class="form-container">
             <h2>Enter User Details</h2>
 

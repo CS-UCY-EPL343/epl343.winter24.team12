@@ -508,7 +508,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </script>
     <div class="content-container">
 
-        <h1>Users</h1>
+        <h1>Users / View Users</h1>
         <!-- Redirect to Add User Page -->
         <button class="btn btn-long" onclick="location.href='admin_add_user.php'">Add New User</button>
 

@@ -324,7 +324,7 @@ $stmt->close();
                 </div>
             </div>
         </div>
-
+        
     <!-- Out-of-Stock Items -->
     <div class="cards-outer-box">
         <div class="card">
@@ -390,6 +390,7 @@ $stmt->close();
                 </tbody>
             </table>
         </div>
+
 </body>
 
 </html>

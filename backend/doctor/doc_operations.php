@@ -357,7 +357,7 @@ $mysqli = Database::getConnection();
 
     <!-- Dashboard Content -->
     <div class="dashboard-container">
-        <h1>Operations > Add New</h1>
+        <h1>Operations / Add New</h1>
         <div class="form-container">
             <h2>Add New Operation Details</h2>
             <form>

@@ -5,7 +5,6 @@ include(__DIR__ . '/../../config/database.php');
 include('../assets/inc/checklogin.php');
 checklogin('secretary'); // Role = 'secretary'
 
-
 $mysqli = Database::getConnection();
 
 // Data for the cards
@@ -60,6 +59,7 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -273,11 +273,11 @@ $stmt->close();
             <i class="fas fa-folder" title="Files"></i>
             <i class="fas fa-cog" title="Settings"></i>
             <i class="fas fa-user-circle" title="Profile"></i>
+            <!-- Add Logout Icon -->
+            <a href="../common/logout.php" title="Logout" style="color: white; text-decoration: none; margin-left: 15px;">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
         </div>
-        <!-- Add Logout Icon -->
-        <a href="../common/logout.php" title="Logout" style="color: white; text-decoration: none; margin-left: 15px;">
-            <i class="fas fa-sign-out-alt"></i>
-        </a>  
     </div>
 
     <!-- Left Side Navigation Bar -->
@@ -285,7 +285,7 @@ $stmt->close();
         <a href="#" class="active" title="Dashboard">
             <i class="fas fa-home"></i> Dashboard
         </a>
-        <a href="#" title="Inventory">
+        <a href="secretary_inventory.php" title="Inventory">
             <i class="fas fa-boxes"></i> Inventory
         </a>
         <a href="#" title="Operations">
@@ -315,9 +315,9 @@ $stmt->close();
                 <i class="fas fa-qrcode"></i>
                 <div>
                     <!-- Button to View Item Info -->
-                    <button onclick="location.href='../common/view_item_info.php';">View Item Info</button>
+                    <button onclick="location.href='../common/view_item_info.php';" style="margin-right: 15px;">View Item Info</button>
                     <!-- Button to Use Item -->
-                    <button onclick="location.href='../common/use_item.php';" style="margin-left: 15px;">Use Item</button>
+                    <button onclick="location.href='../common/use_item.php';">Use Item</button>
                 </div>
             </div>
         </div>
@@ -390,4 +390,3 @@ $stmt->close();
 </body>
 
 </html>
-

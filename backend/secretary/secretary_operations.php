@@ -323,7 +323,7 @@ $mysqli = Database::getConnection();
             <i class="fas fa-stethoscope"></i> Operations <i class="fas fa-chevron-down dropdown-arrow"></i>
         </a>
         <div class="dropdown-content">
-            <a href="add_new.php" title="Add New" style="color: #ffc107;">> Add New</a>
+            <a href="secretary_operations.php" title="Add New" style="color: #ffc107;">> Add New</a>
             <a href="secretary_history_operations.php" title="History">> History</a>
         </div>
     </div>
@@ -357,7 +357,7 @@ $mysqli = Database::getConnection();
 
     <!-- Dashboard Content -->
     <div class="dashboard-container">
-        <h1>Operations > Add New</h1>
+        <h1>Operations / Add New</h1>
         <div class="form-container">
             <h2>Add New Operation Details</h2>
             <form>

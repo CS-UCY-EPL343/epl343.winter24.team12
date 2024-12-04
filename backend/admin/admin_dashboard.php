@@ -296,9 +296,13 @@ $stmt->close();
         <a href="admin_reports.php" title="Reports">
             <i class="fas fa-chart-line"></i> Reports
         </a>
-        <a href="admin_users" title="Users">
-            <i class="fas fa-users"></i> Users
-        </a>
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle"><i class="fas fa-users"></i> Users</a>
+            <div class="dropdown-menu">
+                <a href="admin_users.php">View Users</a>
+                <a href="admin_add_user.php">Add User</a>
+            </div>
+        </div>
         <a href="admin_settings.php" title="Settings">
             <i class="fas fa-cog"></i> Settings
         </a>

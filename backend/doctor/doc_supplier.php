@@ -196,12 +196,6 @@ $stmt->close();
         <a href="doc_reports.php" title="Reports">
             <i class="fas fa-chart-line"></i> Reports
         </a>
-        <a href="#" title="Users">
-            <i class="fas fa-users"></i> Users
-        </a>
-        <a href="doc_settings.php" title="Settings">
-            <i class="fas fa-cog"></i> Settings
-        </a>
     </div>
 
     <!-- Main Content -->

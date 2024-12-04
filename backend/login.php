@@ -45,12 +45,10 @@ if (isset($_POST['login'])) {
                     $err = "Invalid Role. Please contact system administrator.";
             }
         }
-        exit;
-
-if (isset($_POST['login'])) {
-        // Invalid username or password
-        $err = "Access Denied: Invalid Username or Password";
-    }
+        else
+            {
+                $err = "Access Denied: Invalid Username or Password";
+            }
 }
 ?>
 

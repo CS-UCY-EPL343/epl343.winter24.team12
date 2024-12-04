@@ -303,9 +303,6 @@ $stmt->close();
         <a href="admin_users.php" title="Users">
             <i class="fas fa-users"></i> Users
         </a>
-        <a href="admin_settings.php" title="Settings">
-            <i class="fas fa-cog"></i> Settings
-        </a>
     </div>
 
     <!-- Dashboard Content -->

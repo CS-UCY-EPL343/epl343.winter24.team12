@@ -333,8 +333,11 @@ $mysqli = Database::getConnection();
         <a href="doc_reports.php" title="Reports">
             <i class="fas fa-chart-line"></i> Reports
         </a>
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 1f2a0385bda35ea15777b14196d64ba032c632fb
     </div>
 
 

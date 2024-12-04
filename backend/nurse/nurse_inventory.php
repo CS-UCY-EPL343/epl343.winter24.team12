@@ -220,6 +220,14 @@ $stmt->close();
             background-color: #155bb5;
         }
 
+        .add-item-btn {
+            background-color: #34a853;
+        }
+
+        .add-item-btn:hover {
+            background-color: #278d3a;
+        }
+
         /* Inventory Table */
         .content {
             margin-left: 200px;
@@ -294,6 +302,7 @@ $stmt->close();
             <!-- Action Buttons -->
             <div class="action-buttons">
                 <button class="scan-item-btn" onclick="window.location.href='../common/view_item_info.php';"><i class="fas fa-qrcode"></i> View Item Info</button>
+                <button class="add-item-btn" onclick="window.location.href='../common/add_item.php';"><i class="fas fa-plus"></i> Add Item</button>
             </div>
         </div>
 

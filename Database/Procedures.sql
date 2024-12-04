@@ -225,3 +225,11 @@ END$$
 
 -- Reset delimiter
 DELIMITER ;
+
+-- Fetch Data For All Users For Admin Dashboard ---
+DELIMITER $$
+CREATE PROCEDURE GetAllUsers()
+BEGIN
+    SELECT UserID, First_Name, Last_Name, Username, PWD, Email, User_Role, Gender, Created_At, User_Status FROM USERS;
+END$$
+DELIMITER ;

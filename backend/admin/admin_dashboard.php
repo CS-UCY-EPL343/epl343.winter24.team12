@@ -277,7 +277,7 @@ $stmt->close();
         <a href="admin_inventory.php" title="Inventory">
             <i class="fas fa-boxes"></i> Inventory
         </a>
-        <a href="admin_operation.php" title="Operations">
+        <a href="admin_operations.php" title="Operations">
             <i class="fas fa-stethoscope"></i> Operations
         </a>
         <a href="admin_supplier.php" title="Suppliers">
@@ -289,7 +289,7 @@ $stmt->close();
         <a href="admin_users" title="Users">
             <i class="fas fa-users"></i> Users
         </a>
-        <a href="#" title="Settings">
+        <a href="admin_settings.php" title="Settings">
             <i class="fas fa-cog"></i> Settings
         </a>
     </div>

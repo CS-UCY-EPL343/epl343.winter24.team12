@@ -268,12 +268,12 @@ $stmt->close();
     <!-- Left Side Navigation Bar -->
     <div class="sidebar">
         <a href="nurse_dashboard.php" title="Dashboard"><i class="fas fa-home"></i> Dashboard</a>
-        <a href="#" class="active" title="Inventory"><i class="fas fa-boxes"></i> Inventory</a>
-        <a href="#" title="Operations"><i class="fas fa-stethoscope"></i> Operations</a>
+        <a href="nurse_inventory.php" class="active" title="Inventory"><i class="fas fa-boxes"></i> Inventory</a>
+        <a href="nurse_operations.php" title="Operations"><i class="fas fa-stethoscope"></i> Operations</a>
         <a href="nurse_supplier.php" title="Suppliers"><i class="fas fa-truck"></i> Suppliers</a>
-        <a href="#" title="Reports"><i class="fas fa-chart-line"></i> Reports</a>
-        <a href="#" title="Users"><i class="fas fa-users"></i> Users</a>
-        <a href="#" title="Settings"><i class="fas fa-cog"></i> Settings</a>
+        <a href="nurse_reports.php" title="Reports"><i class="fas fa-chart-line"></i> Reports</a>
+        <a href="nurse_users.php" title="Users"><i class="fas fa-users"></i> Users</a>
+        <a href="nurse_settings.php" title="Settings"><i class="fas fa-cog"></i> Settings</a>
     </div>
 
     <div class="content">

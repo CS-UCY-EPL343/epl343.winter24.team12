@@ -14,8 +14,10 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: url('assets/images/main.jpg') no-repeat center center fixed; /* Set background image */
+            background: url('logos/long-white.png') no-repeat center center fixed; /* Set background image */
             background-size: cover; /* Cover the entire viewport */
+            background-size: 100% 50%; /* Set custom width and height for the image */
+            background-position: center; /* Center the image */
             color: #333; /* Dark grey text color for better readability */
             display: flex;
             flex-direction: column;

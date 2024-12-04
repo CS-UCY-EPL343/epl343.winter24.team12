@@ -308,7 +308,7 @@ $mysqli = Database::getConnection();
             <i class="fas fa-boxes"></i> Inventory
         </a>
         <div class="operations-dropdown open">
-        <a href="#" class="active" title="Operations" onclick="toggleDropdown(event)" style="background-color: #ffc107; color: #1a4f6e; font-size: 18px; font-weight: bold; padding: 10px; border-radius: 5px;">
+        <a href="secretary_operations.php" class="active" title="Operations" onclick="toggleDropdown(event)" style="background-color: #ffc107; color: #1a4f6e; font-size: 18px; font-weight: bold; padding: 10px; border-radius: 5px;">
         <i class="fas fa-stethoscope"></i> Operations <i class="fas fa-chevron-down dropdown-arrow"></i>
         </a>
             <div class="dropdown-content">
@@ -319,13 +319,13 @@ $mysqli = Database::getConnection();
         <a href="secretary_supplier.php" title="Suppliers">
             <i class="fas fa-truck"></i> Suppliers
         </a>
-        <a href="#" title="Reports">
+        <a href="secretary_reports.php" title="Reports">
             <i class="fas fa-chart-line"></i> Reports
         </a>
-        <a href="#" title="Users">
+        <a href="secretary_users.php" title="Users">
             <i class="fas fa-users"></i> Users
         </a>
-        <a href="#" title="Settings">
+        <a href="secretary_settings.php" title="Settings">
             <i class="fas fa-cog"></i> Settings
         </a>
     </div>

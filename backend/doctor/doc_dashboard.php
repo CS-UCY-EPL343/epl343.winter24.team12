@@ -287,13 +287,13 @@ $stmt->close();
         <a href="doc_supplier.php" title="Suppliers">
             <i class="fas fa-truck"></i> Suppliers
         </a>
-        <a href="#" title="Reports">
+        <a href="doc_reports.php" title="Reports">
             <i class="fas fa-chart-line"></i> Reports
         </a>
-        <a href="#" title="Users">
+        <a href="doc_users.php" title="Users">
             <i class="fas fa-users"></i> Users
         </a>
-        <a href="#" title="Settings">
+        <a href="doc_settings.php" title="Settings">
             <i class="fas fa-cog"></i> Settings
         </a>
     </div>

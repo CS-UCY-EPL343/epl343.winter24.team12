@@ -60,6 +60,7 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -70,8 +71,8 @@ $stmt->close();
     <!-- Include Font Awesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-        /* General Body Styling */
-        body {
+ /* General Body Styling */
+ body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -142,7 +143,7 @@ $stmt->close();
 
         .sidebar a:hover {
             background-color: #216491;
-            border-radius: 5px;
+            border-radius: 10px;
         }
 
         .sidebar a.active {
@@ -150,6 +151,9 @@ $stmt->close();
             color: #1a4f6e;
             font-weight: bold;
             border-radius: 5px;
+            margin-left: -10px; /* Added margin to shift it slightly left */
+            padding: 10px 1px;
+            flex-direction: column;
         }
 
         .sidebar i {
@@ -296,13 +300,9 @@ $stmt->close();
         <a href="admin_reports.php" title="Reports">
             <i class="fas fa-chart-line"></i> Reports
         </a>
-        <div class="dropdown">
-            <a href="#" class="dropdown-toggle"><i class="fas fa-users"></i> Users</a>
-            <div class="dropdown-menu">
-                <a href="admin_users.php">View Users</a>
-                <a href="admin_add_user.php">Add User</a>
-            </div>
-        </div>
+        <a href="admin_users.php" title="Users">
+            <i class="fas fa-users"></i> Users
+        </a>
         <a href="admin_settings.php" title="Settings">
             <i class="fas fa-cog"></i> Settings
         </a>
@@ -313,14 +313,14 @@ $stmt->close();
         <h1>Dashboard</h1>
 
         <!-- Scan Section -->
-        <div class="outer-container scan-box">
+        <div class="scan-box">
             <div class="scan-section">
                 <i class="fas fa-qrcode"></i>
                 <div>
                     <!-- Button to View Item Info -->
-                    <button onclick="location.href='../common/view_item_info.php';">View Item Info</button>
+                    <button onclick="location.href='../common/view_item_info.php';" style="margin-right: 15px;">View Item Info</button>
                     <!-- Button to Use Item -->
-                    <button onclick="location.href='../common/use_item.php';" style="margin-left: 15px;">Use Item</button>
+                    <button onclick="location.href='../common/use_item.php';">Use Item</button>
                 </div>
             </div>
         </div>
@@ -390,7 +390,7 @@ $stmt->close();
                 </tbody>
             </table>
         </div>
+
 </body>
 
 </html>
-

@@ -3,7 +3,7 @@ session_start();
 
 include(__DIR__ . '/../../config/database.php');
 include('../assets/inc/checklogin.php');
-checklogin('doctor'); // Role = 'doctor'
+checklogin('nurse'); // Role = 'nurse'
 
 $mysqli = Database::getConnection();
 
@@ -311,10 +311,10 @@ $mysqli = Database::getConnection();
     </div>
 
     <div class="sidebar">
-        <a href="doc_dashboard.php" title="Dashboard">
+        <a href="nurse_dashboard.php" title="Dashboard">
             <i class="fas fa-home"></i> Dashboard
         </a>
-        <a href="doc_inventory.php" title="Inventory">
+        <a href="nurse_inventory.php" title="Inventory">
             <i class="fas fa-boxes"></i> Inventory
         </a>
         <!-- Single "Operations" with Dropdown -->
@@ -324,10 +324,10 @@ $mysqli = Database::getConnection();
         </a>
         <div class="dropdown-content">
             <a href="add_new.php" title="Add New" style="color: #ffc107;">> Add New</a>
-            <a href="doc_history_operations.php" title="History">> History</a>
+            <a href="nurse_history_operations.php" title="History">> History</a>
         </div>
     </div>
-        <a href="doc_supplier.php" title="Suppliers">
+        <a href="nurse_supplier.php" title="Suppliers">
             <i class="fas fa-truck"></i> Suppliers
         </a>
 

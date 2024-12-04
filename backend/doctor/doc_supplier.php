@@ -30,7 +30,7 @@ $stmt->close();
     <title>Suppliers</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-        body {
+                body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -38,6 +38,7 @@ $stmt->close();
             display: flex;
         }
 
+        /* Top Navigation Bar */
         .navbar {
             background-color: #1a4f6e;
             color: white;
@@ -66,8 +67,9 @@ $stmt->close();
 
         .navbar .icons i {
             color: white;
-            font-size: 20px;
+            font-size: 20px; /* Ensure all icons have the same size */
             cursor: pointer;
+            margin-right: 8px; /* Optional spacing between icons */
         }
 
         /* Left-Side Navigation Bar */
@@ -108,7 +110,7 @@ $stmt->close();
             color: #1a4f6e;
             font-weight: bold;
             border-radius: 5px;
-            margin-left: -10px; /* Added margin to shift it slightly left */
+            margin-left: -10px;
             padding: 10px 1px;
             flex-direction: column;
         }
@@ -172,8 +174,10 @@ $stmt->close();
             <i class="fas fa-folder" title="Files"></i>
             <i class="fas fa-cog" title="Settings"></i>
             <i class="fas fa-user-circle" title="Profile"></i>
+            <a href="../logout.php" title="Logout"><i class="fas fa-sign-out-alt"></i></a> <!-- Add this -->
         </div>
     </div>
+
 
     <!-- Left Side Navigation Bar -->
     <div class="sidebar">

@@ -18,15 +18,23 @@ $stmt = $mysqli->prepare("
 
 $stmt->execute();
 $result = $stmt->get_result();
+$total_items = 0;
+$in_stock = 0;
+$low_stock = 0;
+$out_of_stock = 0;
+
 while ($row = $result->fetch_assoc()) {
     $status = "In Stock";
     if ($row['Quantity'] == 0) {
         $status = "Out of Stock";
+        $out_of_stock++;
     } elseif ($row['Quantity'] < $row['Min_Quantity']) {
         $status = "Low Stock";
-    } elseif ($row['Expiration_Date'] < date("Y-m-d")) {
-        $status = "Expired";
+        $low_stock++;
+    } else {
+        $in_stock++;
     }
+    $total_items++;
     $inventory_items[] = array_merge($row, ['Status' => $status]);
 }
 $stmt->close();
@@ -42,8 +50,8 @@ $stmt->close();
     <!-- Include Font Awesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-                /* General Body Styling */
-                body {
+        /* General Body Styling */
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -70,18 +78,6 @@ $stmt->close();
         .navbar .logo {
             font-size: 20px;
             font-weight: bold;
-        }
-
-        .navbar .icons {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .navbar .icons i {
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
         }
 
         /* Left-Side Navigation Bar */
@@ -122,21 +118,17 @@ $stmt->close();
             color: #1a4f6e;
             font-weight: bold;
             border-radius: 5px;
-            margin-left: -10px; /* Added margin to shift it slightly left */
+            margin-left: -10px;
             padding: 10px 1px;
             flex-direction: column;
         }
 
-        .sidebar i {
-            font-size: 18px;
-        }
-
         /* Search Bar */
         .search-bar {
-            margin-bottom: 20px; /* Add spacing between search bar and table */
+            margin-bottom: 20px;
             display: flex;
-            justify-content: center; /* Center horizontally */
-            width: 100%; /* Take full width for consistency */
+            justify-content: center;
+            width: 100%;
         }
 
         .search-bar input {
@@ -144,36 +136,116 @@ $stmt->close();
             width: 250px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            text-align: center; /* Center the placeholder text */
+            text-align: center;
         }
 
-        /* Inventory Table */        
-        .content {
-            margin-left: 200px; /* Adjusted to ensure it clears the sidebar */
-            flex-direction: column; /* Align items in a column */
-
-            padding: 100px;
-            display: right;
-            justify-content: center;
+        /* Summary Section */
+        .summary-section {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            min-height: 100vh; /* Ensures content takes full height */
-            box-sizing: border-box;
+            gap: 15px;
+        }
+
+        .summary-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 80%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar-container {
+            width: 60%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .progress-bar {
+            height: 100%;
+        }
+
+        .progress-bar.in-stock {
+            background-color: green;
+            width: <?php echo ($in_stock / max(1, $total_items)) * 100; ?>%;
+        }
+
+        .progress-bar.low-stock {
+            background-color: orange;
+            width: <?php echo ($low_stock / max(1, $total_items)) * 100; ?>%;
+        }
+
+        .progress-bar.out-of-stock {
+            background-color: red;
+            width: <?php echo ($out_of_stock / max(1, $total_items)) * 100; ?>%;
+        }
+
+        .stock-status {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 15px; 
+
+        }
+
+        .action-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        .scan-item-btn {
+            background-color: #1a73e8;
+        }
+
+        .scan-item-btn:hover {
+            background-color: #155bb5;
+        }
+
+        .add-item-btn {
+            background-color: #34a853;
+        }
+
+        .add-item-btn:hover {
+            background-color: #278d3a;
+        }
+
+        /* Inventory Table */
+        .content {
+            margin-left: 200px;
+            padding: 100px;
         }
 
         table {
-            width: auto; /* Adjusted to ensure the table content defines the width */
+            width: auto;
             border-collapse: collapse;
-            margin: 0 auto; /* Centers the table horizontally */
-            
+            margin: 0 auto;
         }
-
 
         table th,
         table td {
             padding: 10px;
             text-align: center;
             border: 1px solid #ddd;
-            
         }
 
         table th {
@@ -183,27 +255,6 @@ $stmt->close();
 
         table tr:nth-child(even) {
             background-color: #f9f9f9;
-        }
-
-        .status {
-            
-            font-weight: bold;
-        }
-
-        .status.in-stock {
-            color: green;
-        }
-
-        .status.low-stock {
-            color: orange;
-        }
-
-        .status.out-of-stock {
-            color: red;
-        }
-
-        .status.expired {
-            color: purple;
         }
     </style>
 </head>
@@ -215,36 +266,45 @@ $stmt->close();
         </div>
     </div>
 
-
     <!-- Left Side Navigation Bar -->
     <div class="sidebar">
-        <a href="doc_dashboard.php" title="Dashboard">
-            <i class="fas fa-home"></i> Dashboard
-        </a>
-        <a href="#" class="active" title="Inventory">
-            <i class="fas fa-boxes"></i> Inventory
-        </a>
-        <a href="#" title="Operations">
-            <i class="fas fa-stethoscope"></i> Operations
-        </a>
-        <a href="doc_supplier.php" title="Suppliers">
-            <i class="fas fa-truck"></i> Suppliers
-        </a>
-        <a href="#" title="Reports">
-            <i class="fas fa-chart-line"></i> Reports
-        </a>
-        <a href="#" title="Users">
-            <i class="fas fa-users"></i> Users
-        </a>
-        <a href="#" title="Settings">
-            <i class="fas fa-cog"></i> Settings
-        </a>
+        <a href="doc_dashboard.php" title="Dashboard"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="#" class="active" title="Inventory"><i class="fas fa-boxes"></i> Inventory</a>
+        <a href="#" title="Operations"><i class="fas fa-stethoscope"></i> Operations</a>
+        <a href="doc_supplier.php" title="Suppliers"><i class="fas fa-truck"></i> Suppliers</a>
+        <a href="#" title="Reports"><i class="fas fa-chart-line"></i> Reports</a>
+        <a href="#" title="Users"><i class="fas fa-users"></i> Users</a>
+        <a href="#" title="Settings"><i class="fas fa-cog"></i> Settings</a>
     </div>
 
     <div class="content">
         <!-- Search Bar -->
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Search items...">
+        </div>
+
+        <!-- Summary Section -->
+        <div class="summary-section">
+            <!-- Product Statistics -->
+            <div class="summary-bar">
+                <div>Total: <?php echo $total_items; ?> Products</div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar in-stock"></div>
+                    <div class="progress-bar low-stock"></div>
+                    <div class="progress-bar out-of-stock"></div>
+                </div>
+                <div class="stock-status">
+                    In Stock: <?php echo $in_stock; ?> |
+                    Low Stock: <?php echo $low_stock; ?> |
+                    Out of Stock: <?php echo $out_of_stock; ?>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="scan-item-btn"><i class="fas fa-qrcode"></i> Scan Item</button>
+                <button class="add-item-btn"><i class="fas fa-plus"></i> Add Item</button>
+            </div>
         </div>
 
         <!-- Inventory Table -->
@@ -255,7 +315,7 @@ $stmt->close();
                         <th>Item Name</th>
                         <th>Quantity</th>
                         <th>Min Quantity</th>
-                        <th>Supplier_Name</th>
+                        <th>Supplier Name</th>
                         <th>Expiration Date</th>
                         <th>Status</th>
                     </tr>

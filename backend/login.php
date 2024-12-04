@@ -1,11 +1,9 @@
-<?php
-session_start();
+<?php  
+session_start();  
 include('../config/database.php'); // Database connection
 
 // Get the database connection
 $mysqli = Database::getConnection();
-
-$err = ''; // Initialize error message variable
 
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
@@ -15,42 +13,44 @@ if (isset($_POST['login'])) {
     $stmt = $mysqli->prepare("SELECT UserID, User_Role FROM USERS WHERE Username = ? AND PWD = ?");
     $stmt->bind_param('ss', $username, $password);
     $stmt->execute();
+    $stmt->bind_result($user_id, $role);
     $stmt->bind_result($user_id, $user_role);
+    $rs = $stmt->fetch();
 
-    if ($stmt->fetch()) {
+    if ($rs) {
         // Assign session variables
         $_SESSION['user_id'] = $user_id;
         $_SESSION['username'] = $username;
-        $_SESSION['User_Role'] = $user_role;
+        $_SESSION['User_Role'] = $role;
+        $_SESSION['role'] = $user_role;
 
         // Redirect based on role
-        switch ($user_role) {
-            case 'admin':
-                header("Location: admin/admin_dashboard.php");
-                break;
-            case 'doctor':
-                header("Location: doctor/doc_dashboard.php");
-                break;
-            case 'nurse':
-                header("Location: nurse/nurse_dashboard.php");
-                break;
-            case 'secretary':
-                header("Location: secretary/secretary_dashboard.php");
-                break;
-            case 'storekeeper':
-                header("Location: storekeeper/store_dashboard.php");
-                break;
-            default:
-                $err = "Invalid Role. Please contact the system administrator.";
-                break;
+    switch ($user_role) {
+                case 'admin':
+                    header("Location: admin/admin_dashboard.php");
+                    break;
+                case 'doctor':
+                    header("Location: doctor/doc_dashboard.php");
+                    break;
+                case 'nurse':
+                    header("Location: nurse/nurse_dashboard.php");
+                    break;
+                case 'secretary':
+                    header("Location: secretary/secretary_dashboard.php");
+                    break;
+                case 'storekeeper':
+                    header("Location: storekeeper/store_dashboard.php");
+                    break;
+                default:
+                    $err = "Invalid Role. Please contact system administrator.";
+            }
         }
         exit;
-    } else {
+
+if (isset($_POST['login'])) {
         // Invalid username or password
         $err = "Access Denied: Invalid Username or Password";
     }
-
-    $stmt->close();
 }
 ?>
 

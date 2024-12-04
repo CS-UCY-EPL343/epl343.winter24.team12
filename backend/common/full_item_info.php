@@ -2,7 +2,6 @@
 session_start();
 include(__DIR__ . '/../../config/database.php');
 include('../assets/inc/checklogin.php');
-checklogin('doctor'); // Role = 'doctor'
 
 $mysqli = Database::getConnection();
 

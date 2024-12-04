@@ -288,19 +288,19 @@ $stmt->close();
         <a href="secretary_inventory.php" title="Inventory">
             <i class="fas fa-boxes"></i> Inventory
         </a>
-        <a href="#" title="Operations">
+        <a href="secretary_operations.php" title="Operations">
             <i class="fas fa-stethoscope"></i> Operations
         </a>
-        <a href="#" title="Suppliers">
+        <a href="secretary_suppliers.php" title="Suppliers">
             <i class="fas fa-truck"></i> Suppliers
         </a>
-        <a href="#" title="Reports">
+        <a href="secretary_reports.php" title="Reports">
             <i class="fas fa-chart-line"></i> Reports
         </a>
         <a href="#" title="Users">
             <i class="fas fa-users"></i> Users
         </a>
-        <a href="#" title="Settings">
+        <a href="secretary_settings.php" title="Settings">
             <i class="fas fa-cog"></i> Settings
         </a>
     </div>

@@ -322,7 +322,7 @@ $mysqli = Database::getConnection();
         <a href="secretary_reports.php" title="Reports">
             <i class="fas fa-chart-line"></i> Reports
         </a>
-        <a href="secretary_users.php" title="Users">
+        <a href="#" title="Users">
             <i class="fas fa-users"></i> Users
         </a>
         <a href="secretary_settings.php" title="Settings">

@@ -5,6 +5,7 @@ include(__DIR__ . '/../../config/database.php');
 include('../assets/inc/checklogin.php');
 checklogin('doctor'); // Role = 'doctor'
 
+
 $mysqli = Database::getConnection();
 
 // Data for the cards
@@ -299,7 +300,7 @@ $stmt->close();
         <a href="doc_reports.php" title="Reports">
             <i class="fas fa-chart-line"></i> Reports
         </a>
-        <a href="doc_users.php" title="Users">
+        <a href="#" title="Users">
             <i class="fas fa-users"></i> Users
         </a>
         <a href="doc_settings.php" title="Settings">

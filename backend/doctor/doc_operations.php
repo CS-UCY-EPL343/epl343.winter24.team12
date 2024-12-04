@@ -323,7 +323,7 @@ $mysqli = Database::getConnection();
             <i class="fas fa-stethoscope"></i> Operations <i class="fas fa-chevron-down dropdown-arrow"></i>
         </a>
         <div class="dropdown-content">
-            <a href="add_new.php" title="Add New" style="color: #ffc107;">> Add New</a>
+            <a href="doc_operations.php.php" title="Add New" style="color: #ffc107;">> Add New</a>
             <a href="doc_history_operations.php" title="History">> History</a>
         </div>
     </div>
@@ -334,7 +334,7 @@ $mysqli = Database::getConnection();
         <a href="doc_reports.php" title="Reports">
             <i class="fas fa-chart-line"></i> Reports
         </a>
-        <a href="doc_users.php" title="Users">
+        <a href="#" title="Users">
             <i class="fas fa-users"></i> Users
         </a>
         <a href="doc_settings.php" title="Settings">

@@ -121,20 +121,27 @@ $back_link = isset($dashboard_links[$role]) ? $dashboard_links[$role] : '../logi
             font-weight: bold;
         }
 
-        .back-button {
-            background-color: #ffc107;
+       /* Back Button */
+       .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #1a4f6e;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             padding: 10px 20px;
-            font-size: 16px;
+            font-size: 14px;
+            font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .back-button:hover {
-            background-color: #ffca28;
+            background-color: #155bb5;
         }
     </style>
 </head>

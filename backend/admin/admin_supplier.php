@@ -108,7 +108,7 @@ $stmt->close();
             color: #1a4f6e;
             font-weight: bold;
             border-radius: 5px;
-            margin-left: -10px; /* Added margin to shift it slightly left */
+            margin-left: -10px;
             padding: 10px 1px;
             flex-direction: column;
         }
@@ -136,6 +136,31 @@ $stmt->close();
             width: 250px;
             border: 1px solid #ddd;
             border-radius: 4px;
+        }
+
+        /* Add Supplier Button */
+        .add-supplier-btn {
+            background-color: #216491;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-supplier-btn i {
+            font-size: 18px;
+        }
+
+        .add-supplier-btn:hover {
+            background-color: #155bb5;
         }
 
         table {
@@ -186,7 +211,7 @@ $stmt->close();
         <a href="admin_operations.php" title="Operations">
             <i class="fas fa-stethoscope"></i> Operations
         </a>
-        <a href="admin_suppliers.php" class="active" title="Suppliers">
+        <a href="admin_supplier.php" class="active" title="Suppliers">
             <i class="fas fa-truck"></i> Suppliers
         </a>
         <a href="admin_reports.php" title="Reports">
@@ -199,6 +224,11 @@ $stmt->close();
 
     <!-- Main Content -->
     <div class="content">
+        <!-- Add New Supplier Button -->
+        <button class="add-supplier-btn" onclick="window.location.href='../common/add_new_supplier.php';">
+            <i class="fas fa-plus"></i> Add New Supplier
+        </button>
+
         <!-- Search Bar -->
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Search suppliers...">

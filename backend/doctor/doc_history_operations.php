@@ -18,8 +18,7 @@ $mysqli = Database::getConnection();
     <!-- Include Font Awesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-        /* General Body Styling */
-        body {
+                body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -56,8 +55,9 @@ $mysqli = Database::getConnection();
 
         .navbar .icons i {
             color: white;
-            font-size: 20px;
+            font-size: 20px; /* Ensure all icons have the same size */
             cursor: pointer;
+            margin-right: 8px; /* Optional spacing between icons */
         }
 
         /* Left-Side Navigation Bar */

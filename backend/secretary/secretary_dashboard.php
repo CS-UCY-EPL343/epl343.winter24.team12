@@ -70,8 +70,7 @@ $stmt->close();
     <!-- Include Font Awesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-        /* General Body Styling */
-        body {
+ body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -142,7 +141,7 @@ $stmt->close();
 
         .sidebar a:hover {
             background-color: #216491;
-            border-radius: 5px;
+            border-radius: 10px;
         }
 
         .sidebar a.active {
@@ -150,6 +149,9 @@ $stmt->close();
             color: #1a4f6e;
             font-weight: bold;
             border-radius: 5px;
+            margin-left: -10px; /* Added margin to shift it slightly left */
+            padding: 10px 1px;
+            flex-direction: column;
         }
 
         .sidebar i {
@@ -209,30 +211,34 @@ $stmt->close();
             border-color: #ffc107;
         }
 
-        /* Cards Section */
-        .cards-outer-box {
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
         .cards-container {
             display: flex;
             justify-content: space-around;
             gap: 20px;
         }
 
+        /* Cards Section */
+        .cards-outer-box {
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-around; /* Space the cards evenly */
+            gap: 20px; /* Add some spacing between cards */
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap; /* Allows wrapping if there isn't enough space */
+        }
+
         .card {
             background-color: white;
             border: 1px solid #ddd;
             border-radius: 8px;
-            width: 30%;
+            flex: 1; /* Make all cards equal width */
+            min-width: 250px; /* Ensure a minimum width for smaller screens */
+            max-width: 30%; /* Limit maximum width for larger screens */
             padding: 20px;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-            height: 200px;
-            overflow-y: auto;
         }
 
         .card h3 {
@@ -241,14 +247,18 @@ $stmt->close();
             margin-bottom: 10px;
         }
 
-        .card ul {
-            list-style-type: decimal;
-            padding-left: 20px;
-            margin: 0;
+        .card table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        .card ul li {
-            padding: 5px 0;
+        .card table td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .card table td:last-child {
+            text-align: right;
         }
     </style>
 </head>
@@ -272,25 +282,25 @@ $stmt->close();
 
     <!-- Left Side Navigation Bar -->
     <div class="sidebar">
-        <a href="secretary_dashboard.php" class="active" title="Dashboard">
+        <a href="#" class="active" title="Dashboard">
             <i class="fas fa-home"></i> Dashboard
         </a>
-        <a href="secretary_invenotry.php" title="Inventory">
+        <a href="#" title="Inventory">
             <i class="fas fa-boxes"></i> Inventory
         </a>
-        <a href="secretary_operations.php" title="Operations">
+        <a href="#" title="Operations">
             <i class="fas fa-stethoscope"></i> Operations
         </a>
-        <a href="secretary_suppliers.php" title="Suppliers">
+        <a href="#" title="Suppliers">
             <i class="fas fa-truck"></i> Suppliers
         </a>
-        <a href="secretary_reports.php" title="Reports">
+        <a href="#" title="Reports">
             <i class="fas fa-chart-line"></i> Reports
         </a>
-        <a href="secretary_users.php" title="Users">
+        <a href="#" title="Users">
             <i class="fas fa-users"></i> Users
         </a>
-        <a href="secretary_settings.php" title="Settings">
+        <a href="#" title="Settings">
             <i class="fas fa-cog"></i> Settings
         </a>
     </div>

@@ -359,8 +359,8 @@ $mysqli = Database::getConnection();
                         <td>2024-12-01</td>
                         <td>2 hours</td>
                         <td>Dr. Smith</td>
-                        <td><a href="doc_reports.php" class="view-report-btn">View Report</a></td>
-                    </tr>
+                        <td><a href="doc_reports.php" class="view-report-btn"><i class="fas fa-file-alt"></i></a></td>
+                        </tr>
                     <tr>
                         <td>2</td>
                         <td>Jane Doe</td>
@@ -369,8 +369,8 @@ $mysqli = Database::getConnection();
                         <td>2024-12-02</td>
                         <td>1 hour</td>
                         <td>Dr. Brown</td>
-                        <td><a href="doc_reports.php" class="view-report-btn">View Report</a></td>
-                    </tr>
+                        <td><a href="doc_reports.php" class="view-report-btn"><i class="fas fa-file-alt"></i></a></td>
+                        </tr>
                 </tbody>
             </table>
             <button class="create-report-btn" onclick="location.href='doc_reports.php'">CREATE REPORT FOR ALL</button>

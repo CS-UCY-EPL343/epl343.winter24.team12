@@ -5,7 +5,6 @@ include(__DIR__ . '/../../config/database.php');
 include('../assets/inc/checklogin.php');
 checklogin('secretary'); // Role = 'secretary'
 
-
 $mysqli = Database::getConnection();
 
 // Data for the cards
@@ -60,6 +59,7 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -142,7 +142,7 @@ $stmt->close();
 
         .sidebar a:hover {
             background-color: #216491;
-            border-radius: 5px;
+            border-radius: 10px;
         }
 
         .sidebar a.active {
@@ -150,6 +150,9 @@ $stmt->close();
             color: #1a4f6e;
             font-weight: bold;
             border-radius: 5px;
+            margin-left: -10px; /* Added margin to shift it slightly left */
+            padding: 10px 1px;
+            flex-direction: column;
         }
 
         .sidebar i {
@@ -263,11 +266,11 @@ $stmt->close();
             <i class="fas fa-folder" title="Files"></i>
             <i class="fas fa-cog" title="Settings"></i>
             <i class="fas fa-user-circle" title="Profile"></i>
+            <!-- Add Logout Icon -->
+            <a href="../common/logout.php" title="Logout" style="color: white; text-decoration: none; margin-left: 15px;">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
         </div>
-        <!-- Add Logout Icon -->
-        <a href="../common/logout.php" title="Logout" style="color: white; text-decoration: none; margin-left: 15px;">
-            <i class="fas fa-sign-out-alt"></i>
-        </a>  
     </div>
 
     <!-- Left Side Navigation Bar -->
@@ -275,7 +278,7 @@ $stmt->close();
         <a href="secretary_dashboard.php" class="active" title="Dashboard">
             <i class="fas fa-home"></i> Dashboard
         </a>
-        <a href="secretary_invenotry.php" title="Inventory">
+        <a href="secretary_inventory.php" title="Inventory">
             <i class="fas fa-boxes"></i> Inventory
         </a>
         <a href="secretary_operations.php" title="Operations">
@@ -305,9 +308,9 @@ $stmt->close();
                 <i class="fas fa-qrcode"></i>
                 <div>
                     <!-- Button to View Item Info -->
-                    <button onclick="location.href='../common/view_item_info.php';">View Item Info</button>
+                    <button onclick="location.href='../common/view_item_info.php';" style="margin-right: 15px;">View Item Info</button>
                     <!-- Button to Use Item -->
-                    <button onclick="location.href='../common/use_item.php';" style="margin-left: 15px;">Use Item</button>
+                    <button onclick="location.href='../common/use_item.php';">Use Item</button>
                 </div>
             </div>
         </div>
@@ -380,4 +383,3 @@ $stmt->close();
 </body>
 
 </html>
-

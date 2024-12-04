@@ -107,6 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             background-color: #f9f9f9;
             display: flex;
         }
+        
 
         .content-container {
             margin-top: 80px;

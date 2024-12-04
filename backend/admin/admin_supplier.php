@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include(__DIR__ . '/../../config/database.php'); 
+include(__DIR__ . '/../../config/database.php');
 include('../assets/inc/checklogin.php');
 checklogin('admin'); // Role = 'admin'
 
@@ -37,6 +37,18 @@ $stmt->close();
             background-color: #f9f9f9;
             display: flex;
         }
+
+        /* Title Styling */
+        .page-title {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            color: #1a4f6e;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
 
         .navbar {
             background-color: #1a4f6e;
@@ -125,42 +137,79 @@ $stmt->close();
             align-items: center;
             min-height: 100vh;
             box-sizing: border-box;
+            position: relative;
         }
 
-        .search-bar {
+        .content h1 {
+            margin: 0;
             margin-bottom: 20px;
+            text-align: left;
+            position: absolute;
+            top: 100px;
+            left: 0;
+            padding-left: 20px;
+        }
+
+        .search-bar,
+        .add-supplier-btn,
+        table {
+            margin-top: 50px;
+            /* Add spacing from the top for these elements */
+        }
+
+
+
+        .search-bar {
+            width: 80%;
+            margin-bottom: 20px auto;
         }
 
         .search-bar input {
-            padding: 10px;
-            width: 250px;
+            width: 95%;
+            /* Full width of the search bar container */
+            padding: 15px;
+            /* Comfortable padding */
+            font-size: 16px;
+            /* Readable font size */
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            /* Align text in the center */
         }
 
-        /* Add Supplier Button */
         .add-supplier-btn {
+            width: 80%;
+            /* Matches the table width */
             background-color: #216491;
+            /* Consistent blue color */
             color: white;
-            border: none;
-            padding: 12px 25px;
             font-size: 18px;
+            /* Similar size to search bar text */
             font-weight: bold;
-            border-radius: 5px;
+            padding: 15px;
+            /* Matches the search bar padding */
+            text-align: center;
+            border: 2px solid white;
+            border-radius: 8px;
             cursor: pointer;
-            margin-bottom: 20px;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            transition: all 0.3s ease;
+            margin-bottom: -20px;
+            /* Space below the button */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .add-supplier-btn i {
-            font-size: 18px;
+            margin-right: 8px;
+            /* Space between the icon and text */
+            font-size: 20px;
         }
 
         .add-supplier-btn:hover {
             background-color: #155bb5;
+            /* Slightly darker blue */
+            border-color: #ffc107;
+            /* Yellow border on hover */
         }
 
         table {
@@ -224,6 +273,9 @@ $stmt->close();
 
     <!-- Main Content -->
     <div class="content">
+
+        <h1>Suppliers</h1>
+
         <!-- Add New Supplier Button -->
         <button class="add-supplier-btn" onclick="window.location.href='../common/add_new_supplier.php';">
             <i class="fas fa-plus"></i> Add New Supplier
@@ -267,7 +319,7 @@ $stmt->close();
         const searchInput = document.getElementById("searchInput");
         const tableRows = document.querySelectorAll("#supplierTable tbody tr");
 
-        searchInput.addEventListener("input", function () {
+        searchInput.addEventListener("input", function() {
             const searchValue = this.value.toLowerCase();
             tableRows.forEach(row => {
                 const supplierName = row.querySelector("td:nth-child(1)").textContent.toLowerCase();

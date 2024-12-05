@@ -24,42 +24,77 @@ $back_link = isset($dashboard_links[$role]) ? $dashboard_links[$role] : '../logi
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Item Info</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-        /* general body styling */
+        /* General Body Styling */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #f9f9f9;
             margin: 0;
             padding: 0;
         }
 
-        /* header styling */
-        h1 {
-            background-color: #216491;
+        .navbar {
+            background-color: #1a4f6e;
             color: white;
-            padding: 20px;
-            margin: 0;
-            font-size: 24px;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 30px;
+            align-items: center;
+            height: 60px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
         }
 
-        /* form container styling */
-        .scan-box {
-            background-color: #216491;
-            color: white;
-            border-radius: 8px;
-            padding: 40px;
-            margin: 20px auto;
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .navbar .icons {
             display: flex;
-            justify-content: center;
+            gap: 15px;
             align-items: center;
-            width: 90%;
-            max-width: 600px;
+        }
+
+        .navbar .icons i {
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .dashboard-container {
+            margin: 100px auto;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        h1 {
+            color: black;
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .scan-box {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
             flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
         }
 
         .scan-section {
@@ -72,47 +107,44 @@ $back_link = isset($dashboard_links[$role]) ? $dashboard_links[$role] : '../logi
 
         .scan-section label {
             font-size: 18px;
-            color: white;
+            font-weight: bold;
+            color: #333;
         }
 
         .scan-section input {
-            padding: 10px;
+            padding: 12px;
             font-size: 16px;
-            border-radius: 4px;
+            border-radius: 5px;
             border: 1px solid #ccc;
             width: 100%;
             max-width: 400px;
         }
 
         .scan-section button {
-            background-color: #216491;
+            background-color: #1a4f6e;
             color: white;
-            padding: 15px 50px;
-            border: 2px solid white;
-            border-radius: 4px;
+            padding: 12px 40px;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
-            text-align: center;
+            transition: background-color 0.3s ease;
         }
 
         .scan-section button:hover {
-            background-color: #1a4f6e;
-            border-color: #ffc107;
+            background-color: #155bb5;
         }
 
         #item-info {
             margin-top: 20px;
             padding: 20px;
-            border: 1px solid #d9d9d9;
+            border: 1px solid #ddd;
             border-radius: 8px;
             background-color: #ffffff;
             color: #333;
-            display: none; /* hidden by default */
+            display: none;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
             text-align: left;
         }
 
@@ -121,11 +153,8 @@ $back_link = isset($dashboard_links[$role]) ? $dashboard_links[$role] : '../logi
             font-weight: bold;
         }
 
-       /* Back Button */
-       .back-button {
-            position: absolute;
-            top: 20px;
-            left: 20px;
+        /* Back Button */
+        .back-button {
             background-color: #1a4f6e;
             color: white;
             border: none;
@@ -135,57 +164,96 @@ $back_link = isset($dashboard_links[$role]) ? $dashboard_links[$role] : '../logi
             font-weight: bold;
             cursor: pointer;
             text-decoration: none;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
         }
 
         .back-button:hover {
             background-color: #155bb5;
         }
+
+        .back-button i {
+            font-size: 14px;
+        }
     </style>
 </head>
-<body>
-    <h1>View Item Info</h1>
 
-    <!-- scan box -->
-    <div class="scan-box">
-        <div class="scan-section">
-            <label for="barcode">Enter Barcode:</label>
-            <input type="text" id="barcode" name="barcode" placeholder="Scan barcode here..." required>
-            <button id="submit-button">Submit</button>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <div class="navbar">
+        <div class="logo">
+            <strong>HIMAROS</strong>
+        </div>
+        <div class="icons">
+            <i class="fas fa-folder" title="Files"></i>
+            <i class="fas fa-cog" title="Settings"></i>
+            <i class="fas fa-user-circle" title="Profile"></i>
+            <!-- Add Logout Icon -->
+            <a href="../common/logout.php" title="Logout" style="color: white; text-decoration: none; margin-left: 15px;">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
         </div>
     </div>
 
-    <!-- container to display item info or error -->
-    <div id="item-info"></div>
 
-    <!-- back button -->
-    <button class="back-button" onclick="location.href='<?php echo $back_link; ?>'">Back</button>
 
+    </div>
+    <div class="dashboard-container">
+        <h1>View Item Information</h1>
+
+
+
+        <!-- scan box -->
+        <div class="scan-box">
+            <div class="scan-section">
+                <label for="barcode">Enter Barcode:</label>
+                <input type="text" id="barcode" name="barcode" placeholder="Scan barcode here..." required>
+                <button id="submit-button">Submit</button>
+            </div>
+        </div>
+
+        <!-- container to display item info or error -->
+        <div id="item-info"></div>
+
+        <!-- Back Button -->
+        <button class="back-button" onclick="history.back();">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+
+    </div>
     <script>
         document.getElementById('submit-button').addEventListener('click', function(e) {
             const barcode = document.getElementById('barcode').value;
 
             // send the barcode to the server using fetch
             fetch('process_barcode.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({ barcode: barcode, action: 'view' })
-            })
-            .then(response => response.text())
-            .then(data => {
-                const infoDiv = document.getElementById('item-info');
-                infoDiv.style.display = 'block'; // show the info container
-                infoDiv.innerHTML = data; // update the container with the response
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                const infoDiv = document.getElementById('item-info');
-                infoDiv.style.display = 'block'; // show the info container
-                infoDiv.innerHTML = `<p class="error">An error occurred while fetching item information. Please try again.</p>`;
-            });
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        barcode: barcode,
+                        action: 'view'
+                    })
+                })
+                .then(response => response.text())
+                .then(data => {
+                    const infoDiv = document.getElementById('item-info');
+                    infoDiv.style.display = 'block'; // show the info container
+                    infoDiv.innerHTML = data; // update the container with the response
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    const infoDiv = document.getElementById('item-info');
+                    infoDiv.style.display = 'block'; // show the info container
+                    infoDiv.innerHTML = `<p class="error">An error occurred while fetching item information. Please try again.</p>`;
+                });
         });
     </script>
 </body>
+
 </html>

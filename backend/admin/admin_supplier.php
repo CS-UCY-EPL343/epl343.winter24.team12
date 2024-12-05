@@ -247,6 +247,10 @@ $stmt->close();
             <i class="fas fa-folder" title="Files"></i>
             <i class="fas fa-cog" title="Settings"></i>
             <i class="fas fa-user-circle" title="Profile"></i>
+            <!-- Add Logout Icon -->
+            <a href="../common/logout.php" title="Logout" style="color: white; text-decoration: none; margin-left: 15px;">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
         </div>
     </div>
 

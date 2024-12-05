@@ -101,144 +101,264 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: #f9f9f9;
         }
 
-        .top-bar {
-            background-color: #216491;
+        /* Top Navigation Bar */
+        .navbar {
+            background-color: #1a4f6e;
             color: white;
-            padding: 15px;
-            text-align: center;
-            position: relative;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 30px;
+            align-items: center;
+            height: 60px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
         }
 
-        .top-bar h1 {
-            margin: 0;
-            font-size: 24px;
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
         }
+
+        .navbar .icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .navbar .icons i {
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            margin-top: 100px;
+            padding: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-container {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 22px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .button-container .cancel-btn {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .button-container .add-btn {
+            background-color: #1a4f6e;
+            color: white;
+        }
+
+        .message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
 
         .back-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
+           margin-top: 20px;
             background-color: #1a4f6e;
             color: white;
             border: none;
             border-radius: 5px;
-            padding: 8px 15px;
-            font-size: 14px;
+            padding: 12px 20px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             text-decoration: none;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
+            transition: background-color 0.3s ease;
         }
 
         .back-button:hover {
             background-color: #155bb5;
         }
 
-        .add-item-form {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .add-item-form h2 {
-            margin-bottom: 20px;
-            font-size: 22px;
-            color: #333;
-            text-align: center;
-        }
-
-        .add-item-form input,
-        .add-item-form select,
-        .add-item-form textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        .back-button i {
             font-size: 16px;
-            color: #333;
-        }
-
-        .add-item-form button {
-            display: block;
-            margin: 20px auto;
-            padding: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            background-color: #216491;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.3s ease;
-        }
-
-        .add-item-form button:hover {
-            background-color: #1a4f6e;
-        }
-
-        .message {
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        .success-message {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .error-message {
-            background-color: #f8d7da;
-            color: #721c24;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="top-bar">
-        <a href="<?php echo htmlspecialchars($back_link); ?>" class="back-button">
-            <i class="fas fa-arrow-left"></i> Back
-        </a>
-        <h1>Add New Item</h1>
+    <!-- Top Navigation Bar -->
+    <div class="navbar">
+        <div class="logo">
+            <strong>HIMAROS</strong>
+        </div>
+        <div class="icons">
+            <i class="fas fa-folder" title="Files"></i>
+            <i class="fas fa-cog" title="Settings"></i>
+            <i class="fas fa-user-circle" title="Profile"></i>
+            <!-- Add Logout Icon -->
+            <a href="../common/logout.php" title="Logout" style="color: white; text-decoration: none; margin-left: 15px;">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
+        </div>
     </div>
 
-    <div class="add-item-form">
-        <h2>Item Information</h2>
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <!-- Page Title -->
+        <h1>Add New Item</h1>
 
-        <?php if ($success): ?>
-            <div class="message success-message"><?php echo $success; ?></div>
-        <?php endif; ?>
+        <!-- Add Item Form -->
+        <div class="form-container">
+            <h2>Item Details</h2>
 
-        <?php if ($error): ?>
-            <div class="message error-message"><?php echo $error; ?></div>
-        <?php endif; ?>
+            <?php if ($success): ?>
+                <div class="message success-message"><?php echo $success; ?></div>
+            <?php endif; ?>
 
-        <form action="" method="POST" enctype="multipart/form-data">
-            <input type="text" name="category" placeholder="Category" required>
-            <input type="text" name="item_name" placeholder="Item Name" required>
-            <input type="file" name="item_image" accept="image/*" required>
-            <input type="number" step="0.01" name="cost" placeholder="Cost" required>
-            <select name="item_type" required>
-                <option value="" disabled selected>Select Item Type</option>
-                <option value="reusable">Reusable</option>
-                <option value="disposable">Disposable</option>
-                <option value="other">Other</option>
-            </select>
-            <textarea name="description" rows="4" placeholder="Description" required></textarea>
-            <input type="number" name="min_quantity" placeholder="Minimum Quantity" required>
-            <input type="number" name="supplier_id" placeholder="Supplier ID" required>
-            <button type="submit">Add Item <i class="fas fa-plus"></i></button>
-        </form>
+            <?php if ($error): ?>
+                <div class="message error-message"><?php echo $error; ?></div>
+            <?php endif; ?>
+
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <input type="text" name="category" id="category" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="item_name">Item Name</label>
+                        <input type="text" name="item_name" id="item_name" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="item_image">Item Image</label>
+                        <input type="file" name="item_image" id="item_image" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cost">Cost</label>
+                        <input type="number" step="0.01" name="cost" id="cost" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="item_type">Item Type</label>
+                        <select name="item_type" id="item_type" required>
+                            <option value="" disabled selected>Select Item Type</option>
+                            <option value="reusable">Reusable</option>
+                            <option value="disposable">Disposable</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="min_quantity">Minimum Quantity</label>
+                        <input type="number" name="min_quantity" id="min_quantity" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="supplier_id">Supplier ID</label>
+                        <input type="number" name="supplier_id" id="supplier_id" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea name="description" id="description" rows="4" required></textarea>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button type="reset" class="cancel-btn">Clear</button>
+                    <button type="submit" class="add-btn">Add Item</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Back Button -->
+        <button class="back-button" onclick="history.back();">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
     </div>
 
 </body>

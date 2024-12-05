@@ -1,5 +1,6 @@
 <?php
 session_start();  // Ensure session is started
+include(__DIR__ . '/../../config/database.php');
 
 // Check if the user is logged in and their role is set
 if (!isset($_SESSION['role'])) {
@@ -24,10 +25,39 @@ if (isset($dashboard_links[$role])) {
 } else {
     $back_link = '../login.php';  // Default to login page if the role is unknown
 }
+
+// Database connection
+$mysqli = Database::getConnection();
+$error = null;
+$success = null;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $supplierName = $_POST['supplier_name'];
+    $contactInfo = $_POST['contact_info'];
+    $email = $_POST['email'];
+    $address = $_POST['address'];
+
+    // Validate email format
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email format.";
+    } else {
+        // Use the stored procedure to add a new supplier
+        $stmt = $mysqli->prepare("CALL AddSupplier(?, ?, ?, ?)");
+        $stmt->bind_param('ssss', $supplierName, $contactInfo, $email, $address);
+
+        if ($stmt->execute()) {
+            $success = "Supplier successfully added!";
+        } else {
+            $error = "Database Error: " . $stmt->error;
+        }
+        $stmt->close();
+    }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,13 +88,13 @@ if (isset($dashboard_links[$role])) {
         /* Back Button */
         .back-button {
             position: absolute;
-            top: 10px; /* Adjusted for better alignment */
+            top: 10px;
             left: 10px;
             background-color: #1a4f6e;
             color: white;
             border: none;
             border-radius: 5px;
-            padding: 8px 15px; /* Reduced padding for compact look */
+            padding: 8px 15px;
             font-size: 14px;
             font-weight: bold;
             cursor: pointer;
@@ -96,7 +126,6 @@ if (isset($dashboard_links[$role])) {
         }
 
         .add-supplier-form input,
-        .add-supplier-form select,
         .add-supplier-form button {
             width: 100%;
             padding: 12px;
@@ -118,9 +147,22 @@ if (isset($dashboard_links[$role])) {
             background-color: #155bb5;
         }
 
-        .add-supplier-form input:focus,
-        .add-supplier-form select:focus {
-            border-color: #216491;
+        .message {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
         }
     </style>
 </head>
@@ -138,15 +180,24 @@ if (isset($dashboard_links[$role])) {
     <!-- Add Supplier Form -->
     <div class="add-supplier-container">
         <h2>Supplier Information</h2>
-        <form class="add-supplier-form" action="submit_supplier.php" method="POST">
+
+        <?php if ($success): ?>
+            <div class="message success-message"><?php echo $success; ?></div>
+        <?php endif; ?>
+
+        <?php if ($error): ?>
+            <div class="message error-message"><?php echo $error; ?></div>
+        <?php endif; ?>
+
+        <form class="add-supplier-form" method="POST">
             <input type="text" name="supplier_name" placeholder="Supplier Name" required>
             <input type="text" name="contact_info" placeholder="Contact Info" required>
             <input type="email" name="email" placeholder="Email Address" required>
             <input type="text" name="address" placeholder="Supplier Address" required>
-            
             <button type="submit">Add Supplier</button>
         </form>
     </div>
 
 </body>
+
 </html>

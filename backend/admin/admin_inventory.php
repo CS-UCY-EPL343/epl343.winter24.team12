@@ -92,6 +92,18 @@ $stmt->close();
             font-weight: bold;
         }
 
+        .navbar .icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .navbar .icons i {
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
         /* Left-Side Navigation Bar */
         .sidebar {
             width: 180px;

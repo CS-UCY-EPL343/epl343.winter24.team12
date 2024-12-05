@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\assets",
+    "\\backend",
+    "\\backend\\admin",
+    "\\backend\\assets",
+    "\\backend\\assets\\inc",
+    "\\backend\\common",
+    "\\backend\\doctor",
+    "\\config",
+    "\\Database"
+  ],
+  "SelectedNode": "\\backend\\admin\\admin_dashboard.php",
+  "PreviewInSolutionExplorer": false
+}

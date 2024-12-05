@@ -7,13 +7,25 @@ checklogin('admin'); // Role = 'admin'
 
 $mysqli = Database::getConnection();
 
-// Fetch inventory items
+// Fetch inventory items, including new items with no stock
 $inventory_items = [];
 $stmt = $mysqli->prepare("
-    SELECT i.Item_Name, cs.Quantity, i.Min_Quantity, cs.Expiration_Date, s.Suppleir_Name
+    SELECT 
+        i.Item_Name,
+        COALESCE(cs.Quantity, 0) AS Quantity,
+        i.Min_Quantity,
+        COALESCE(cs.Expiration_Date, 'N/A') AS Expiration_Date,
+        s.Suppleir_Name,
+        CASE 
+            WHEN cs.Quantity IS NULL THEN 'Out of Stock'
+            WHEN cs.Quantity = 0 THEN 'Out of Stock'
+            WHEN cs.Quantity < i.Min_Quantity THEN 'Low Stock'
+            ELSE 'In Stock'
+        END AS Status
     FROM ITEM i
-    JOIN CURRENT_STOCK cs ON i.ItemID = cs.ItemID
-    JOIN SUPPLIER s ON i.SupplierID = s.SupplierID
+    LEFT JOIN CURRENT_STOCK cs ON i.ItemID = cs.ItemID
+    LEFT JOIN SUPPLIER s ON i.SupplierID = s.SupplierID
+    ORDER BY i.ItemID DESC
 ");
 
 $stmt->execute();

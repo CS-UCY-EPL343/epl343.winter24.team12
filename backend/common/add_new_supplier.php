@@ -71,69 +71,85 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: #f9f9f9;
         }
 
-        /* Top Bar */
-        .top-bar {
-            background-color: #216491;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            position: relative;
-        }
-
-        .top-bar h1 {
-            margin: 0;
-            font-size: 24px;
-        }
-
-        /* Back Button */
-        .back-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
+        /* Top Navigation Bar */
+        .navbar {
             background-color: #1a4f6e;
             color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 8px 15px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
             display: flex;
+            justify-content: space-between;
+            padding: 10px 30px;
             align-items: center;
-            gap: 8px;
+            height: 60px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
         }
 
-        .back-button:hover {
-            background-color: #155bb5;
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
         }
 
-        /* Add Supplier Form Container */
-        .add-supplier-container {
-            margin: 40px auto;
+        .navbar .icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .navbar .icons i {
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            margin: 120px auto;
+            max-width: 600px;
             padding: 20px;
+        }
+
+        h1 {
+            color: black;
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .add-supplier-container {
             background-color: white;
-            border-radius: 8px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 30px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            text-align: center;
+            margin-bottom: 30px;
         }
 
         .add-supplier-container h2 {
-            margin: 0 0 20px;
-            font-size: 22px;
+            font-size: 20px;
+            font-weight: bold;
             color: #333;
+            margin-bottom: 20px;
+            text-align: left;
         }
 
         .add-supplier-form input,
         .add-supplier-form button {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
             border-radius: 5px;
             border: 1px solid #ddd;
             font-size: 16px;
             color: #333;
+            box-sizing: border-box;
+        }
+
+        .add-supplier-form input {
+            background-color: #f9f9f9;
         }
 
         .add-supplier-form button {
@@ -141,10 +157,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: white;
             cursor: pointer;
             font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .add-supplier-form button:hover {
             background-color: #155bb5;
+            transform: scale(1.02);
         }
 
         .message {
@@ -164,39 +182,83 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: #f8d7da;
             color: #721c24;
         }
+
+        /* Back Button */
+        .back-button {
+            margin-top: 20px;
+            display: inline-flex;
+            align-items: center;
+            padding: 15px;
+            background-color: #1a4f6e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .back-button i {
+            margin-right: 10px;
+        }
+
+        .back-button:hover {
+            background-color: #155bb5;
+            transform: scale(1.02);
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <a href="<?php echo htmlspecialchars($back_link); ?>" class="back-button">
-            <i class="fas fa-arrow-left"></i> Back
-        </a>
-        <h1>Add New Supplier</h1>
+    <!-- Top Navigation Bar -->
+    <div class="navbar">
+        <div class="logo">
+            <strong>HIMAROS</strong>
+        </div>
+        <div class="icons">
+            <i class="fas fa-folder" title="Files"></i>
+            <i class="fas fa-cog" title="Settings"></i>
+            <i class="fas fa-user-circle" title="Profile"></i>
+            <!-- Add Logout Icon -->
+            <a href="../common/logout.php" title="Logout" style="color: white; text-decoration: none; margin-left: 15px;">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
+        </div>
     </div>
 
-    <!-- Add Supplier Form -->
-    <div class="add-supplier-container">
-        <h2>Supplier Information</h2>
 
-        <?php if ($success): ?>
-            <div class="message success-message"><?php echo $success; ?></div>
-        <?php endif; ?>
+    <<!-- Dashboard Content -->
+        <div class="dashboard-container">
+            <!-- Page Title -->
+            <h1>Add New Supplier</h1>
 
-        <?php if ($error): ?>
-            <div class="message error-message"><?php echo $error; ?></div>
-        <?php endif; ?>
+            <!-- Add Supplier Form -->
+            <div class="add-supplier-container">
+                <h2>Supplier Information</h2>
+                <?php if ($success): ?>
+                    <div class="message success-message"><?php echo $success; ?></div>
+                <?php endif; ?>
 
-        <form class="add-supplier-form" method="POST">
-            <input type="text" name="supplier_name" placeholder="Supplier Name" required>
-            <input type="text" name="contact_info" placeholder="Contact Info" required>
-            <input type="email" name="email" placeholder="Email Address" required>
-            <input type="text" name="address" placeholder="Supplier Address" required>
-            <button type="submit">Add Supplier</button>
-        </form>
-    </div>
+                <?php if ($error): ?>
+                    <div class="message error-message"><?php echo $error; ?></div>
+                <?php endif; ?>
+
+                <form class="add-supplier-form" method="POST">
+                    <input type="text" name="supplier_name" placeholder="Supplier Name" required>
+                    <input type="text" name="contact_info" placeholder="Contact Info" required>
+                    <input type="email" name="email" placeholder="Email Address" required>
+                    <input type="text" name="address" placeholder="Supplier Address" required>
+                    <button type="submit">Add Supplier</button>
+                </form>
+            </div>
+            <!-- Back Button -->
+            <a href="<?php echo $back_link; ?>" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
 
 </body>
 

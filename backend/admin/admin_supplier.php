@@ -12,6 +12,7 @@ $suppliers = [];
 $stmt = $mysqli->prepare("
     SELECT Suppleir_Name, Contact_Info, Email, Supplier_Address
     FROM SUPPLIER
+    ORDER BY SupplierID DESC
 ");
 $stmt->execute();
 $result = $stmt->get_result();
@@ -272,8 +273,9 @@ $stmt->close();
     </div>
 
     <!-- Main Content -->
+    
+<body>
     <div class="content">
-
         <h1>Suppliers</h1>
 
         <!-- Add New Supplier Button -->
@@ -313,6 +315,7 @@ $stmt->close();
             </tbody>
         </table>
     </div>
+</body>
 
     <!-- JavaScript for Search -->
     <script>
@@ -334,3 +337,7 @@ $stmt->close();
 </body>
 
 </html>
+
+
+
+        
